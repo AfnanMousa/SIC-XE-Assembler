@@ -251,6 +251,12 @@ int transitions::twoscomp(int num, int bits) {
     }
     return result + 1;
 }
+bool transitions::isOutOfRange(string s1) {
+    int dec = hexaToDec(s1);
+    if (dec > 2047 || dec < -2048)
+        return true;
+    return false;
+}
 transitions::transitions()
 {
 }

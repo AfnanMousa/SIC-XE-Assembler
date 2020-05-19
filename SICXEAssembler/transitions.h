@@ -12,6 +12,7 @@ public:
 	int binToDec(string hexa);
 	string decToBin(int decimal);
 	int twoscomp(int num, int bits);
+	bool isOutOfRange(string s1);
 	transitions();
 	~transitions();
 };
