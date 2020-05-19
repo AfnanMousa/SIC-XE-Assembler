@@ -161,6 +161,8 @@
     <ClCompile Include="SICXEAssembler.cpp" />
     <ClCompile Include="Format3.cpp" />
     <ClCompile Include="StaticTables.cpp" />
+    <ClCompile Include="symbolTable.cpp" />
+    <ClCompile Include="SYMTable.cpp" />
     <ClCompile Include="toHexa.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +171,7 @@
     <ClInclude Include="FormatChecker.h" />
     <ClInclude Include="LegalFlagsCombinations.h" />
     <ClInclude Include="StaticTables.h" />
+    <ClInclude Include="symbolTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

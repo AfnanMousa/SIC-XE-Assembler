@@ -4,10 +4,10 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <vector>
 
 
-class StaticTables
-{
+class StaticTables {
 private:
 	std::map<std::string, int> regTable;
 	std::map<std::string, std::string>  operationTable;
