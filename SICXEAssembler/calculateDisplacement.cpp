@@ -9,6 +9,9 @@ calculateDisplacement::calculateDisplacement()
 string calculateDisplacement::execute(int format, string opCode, string operand) {
 	cout << "executing calculateDisplacement" << endl;
 	// Your implementation
+	
+
+
 	return opCode;
 }
 

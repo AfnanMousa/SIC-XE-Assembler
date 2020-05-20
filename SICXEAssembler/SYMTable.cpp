@@ -1,4 +1,5 @@
 #include "symbolTable.h"
+#include <iostream>
 
 static SYMTable* instance;
 
@@ -8,10 +9,27 @@ SYMTable* SYMTable::getInstance() {
 	return instance;
 }
 
-symbolTable* SYMTable::getLine(string index) {
+symbolTable SYMTable::getLine(string index) {
+	std::cout << index << std::endl;
 	return SYMPOLTable.at(index);
 }
 
-void SYMTable::addLine(string i, symbolTable* line) {
+void SYMTable::addLine(string i, symbolTable line) {
 	SYMPOLTable.insert({i,line});
+}
+
+bool SYMTable::isFound(string label) {
+	return SYMPOLTable.find(label) == SYMPOLTable.end();
+}
+
+int SYMTable::occurrences(string operand) {
+	return SYMPOLTable.count(operand);
+}
+
+void SYMTable::setBASE(string base) {
+	this->BASE = base;
+}
+
+string SYMTable::getBASE() {
+	return this->BASE;
 }

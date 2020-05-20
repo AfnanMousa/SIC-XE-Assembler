@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include "LegalFlagsCombinations.h"
+#include "symbolTable.h"
 
 using namespace std;
 
@@ -14,22 +15,16 @@ class Command
 public:
 	Command() {}
 	virtual ~Command() {}
-	virtual string execute(int format, string opCode, string operand) = 0;
-};
-
-class calculateDisplacement : public Command {
-public:
-	calculateDisplacement();
-	~calculateDisplacement();
-	string execute(int format, string opCode, string operand);
-
+	virtual string execute(int format, symbolTable) = 0;
 };
 
 class findFlags : public Command {
+private:
+	string findNiX(string);
 public:
 	findFlags();
 	~findFlags();
-	string execute(int format, string opCode,string operand);
+	string execute(int format, symbolTable);
 
 };
 
@@ -37,7 +32,7 @@ class toHexa : public Command{
 public:
 	toHexa();
 	~toHexa();
-	string execute(int format, string opCode, string operand);
+	string execute(int format, symbolTable);
 
 };
 

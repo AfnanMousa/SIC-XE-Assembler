@@ -20,6 +20,11 @@ void symbolTable::setOperand(string operand)
 	this->operand = operand;
 }
 
+void symbolTable::setOperation(string operation)
+{
+	this->operation = operation;
+}
+
 void symbolTable::setObjectCode(string objectCode)
 {
 	this->objectCode = objectCode;
@@ -53,6 +58,11 @@ string symbolTable::getOpcode()
 string symbolTable::getOperand()
 {
 	return operand;
+}
+
+string symbolTable::getOperation()
+{
+	return operation;
 }
 
 string symbolTable::getObjectCode()

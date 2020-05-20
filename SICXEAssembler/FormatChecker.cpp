@@ -9,16 +9,16 @@ FormatChecker::FormatChecker(string operation, string Operator)
 	this->f4 = new Format4(operation, Operator);
 }
 
-void FormatChecker::format2GenOpCode() {
-	f2->generateOpCode();
+string FormatChecker::format2GenOpCode() {
+	return f2->generateOpCode();
 }
 
-void FormatChecker::format3GenOpCode() {
-	f3->generateOpCode();
+string FormatChecker::format3GenOpCode() {
+	return f3->generateOpCode();
 }
 
-void FormatChecker::format4GenOpCode() {
-	f4->generateOpCode();
+string FormatChecker::format4GenOpCode() {
+	return f4->generateOpCode();
 }
 
 FormatChecker::~FormatChecker()

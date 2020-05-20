@@ -1,4 +1,5 @@
 #include "Command.h"
+#include "symbolTable.h"
 
 toHexa::toHexa()
 {
@@ -6,7 +7,8 @@ toHexa::toHexa()
 	cout << "Command toHexa Object is being created" << endl;
 }
 
-string toHexa::execute(int format, string opCode, string operand) {
+string toHexa::execute(int format, symbolTable tableObject) {
+	string opCode;
 	cout << "executing toHexa" << endl;
 	// Your implementation
 	return opCode;
