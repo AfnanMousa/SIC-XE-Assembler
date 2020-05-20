@@ -1,10 +1,11 @@
 #include "Format.h"
 #include "StaticTables.h"
+#include "Auxillary.h"
 
 Format4::Format4(string operation, string Operator)
 {
 	//ctor -- i.e Constructor
-	cout << "Format4 Object is being created" << endl;
+	//cout << "Format4 Object is being created" << endl;
 	this->operation = operation;
 	this->operand = Operator;
 }
@@ -15,8 +16,12 @@ string Format4::generateOpCode() {
 	operation = operation.substr(1, operation.size() - 1);
 
 	StaticTables* data = data->getInstance();
+	transitions* t = new transitions();
 	cout << data->getData(operation) << endl;
-	opCode = opCode + data->getData(operation);
+	string intermediate = t->hexaToBinary(data->getData(operation));
+	intermediate = intermediate.substr(0, operation.size() - 3);
+	opCode = opCode + intermediate;
+
 
 	return opCode;
 }

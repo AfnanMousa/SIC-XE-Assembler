@@ -19,9 +19,9 @@ public:
 	FormatChecker() = default;
 	FormatChecker(string, string);
 	~FormatChecker();
-	void format2GenOpCode();
-	void format3GenOpCode();
-	void format4GenOpCode();
+	string format2GenOpCode();
+	string format3GenOpCode();
+	string format4GenOpCode();
 
 };
 

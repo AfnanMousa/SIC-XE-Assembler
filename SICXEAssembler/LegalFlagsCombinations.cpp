@@ -23,15 +23,15 @@ std::string legalFlagsCombinations::getBPE(std::string key) {
 }
 
 void legalFlagsCombinations::generateFirstPart() {
-	firstPart.insert({ "address","001" });
-	firstPart.insert({ "displacement","000" });
-	firstPart.insert({ "PC","010" });
-	firstPart.insert({ "Base","100" });
+	firstPart.insert({ "indirect","100" });
+	firstPart.insert({ "immediate","010" });
+	firstPart.insert({ "directNoIndexing","110" });
+	firstPart.insert({ "directIndexing","111" });
 }
 
 void legalFlagsCombinations::generateSecondPart() {
-	secondPart.insert({ "indirect","100" });
-	secondPart.insert({ "immediate","010" });
-	secondPart.insert({ "directNoIndexing","110" });
-	secondPart.insert({ "directIndexing","111" });
+	secondPart.insert({ "address","001" });
+	secondPart.insert({ "displacement","000" });
+	secondPart.insert({ "PC","010" });
+	secondPart.insert({ "Base","100" });
 }

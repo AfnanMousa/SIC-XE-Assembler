@@ -1,7 +1,2 @@
-﻿  Format4.cpp
-  LegalFlagsCombinations.cpp
-  SICXEAssembler.cpp
-  StaticTables.cpp
-  findFlags.cpp
-  Generating Code...
+﻿  findFlags.cpp
   SICXEAssembler.vcxproj -> C:\Users\hp\source\repos\SICXEAssembler\Debug\SICXEAssembler.exe

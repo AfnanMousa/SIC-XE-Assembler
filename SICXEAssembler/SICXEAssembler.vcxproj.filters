@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Data">
       <UniqueIdentifier>{96479dc1-c1ef-4f94-88d7-805bd0dd13aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Auxillary">
+      <UniqueIdentifier>{ef7cbc17-9b64-4067-be95-63b57560daad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Parser">
+      <UniqueIdentifier>{9b33cb94-c01f-4141-b530-cf4cf811ffae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SICXEAssembler.cpp">
@@ -36,9 +42,6 @@
     <ClCompile Include="Format2.cpp">
       <Filter>Source Files\Formats</Filter>
     </ClCompile>
-    <ClCompile Include="calculateDisplacement.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="toHexa.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -47,9 +50,6 @@
     </ClCompile>
     <ClCompile Include="StaticTables.cpp">
       <Filter>Source Files\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="findOpCode.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FormatChecker.cpp">
       <Filter>Source Files\Formats</Filter>
@@ -62,6 +62,27 @@
     </ClCompile>
     <ClCompile Include="SYMTable.cpp">
       <Filter>Source Files\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Transitions.cpp">
+      <Filter>Source Files\Auxillary</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadFromFile.cpp">
+      <Filter>Source Files\Auxillary</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="MakeAddress.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalTable.cpp">
+      <Filter>Source Files\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicTables.cpp">
+      <Filter>Source Files\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +102,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="symbolTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Auxillary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadFromFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MakeAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicTables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
