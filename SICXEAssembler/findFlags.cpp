@@ -58,6 +58,7 @@ string findFlags::findNiX(string operand) {
 	SYMTable* table = table->getInstance();
 	
 	string NIX;
+	cout << "HERE" << endl;
 	if (operand.find("#") < operand.size()) {
 		NIX = l->getNIX("immediate");
 		operand = operand.substr(1, operand.size() - 1);
@@ -66,20 +67,26 @@ string findFlags::findNiX(string operand) {
 		geek >> x;
 		address = t->decimalToBinary(x);
 	}
-	else if (operand.find("@") < operand.size()) {
-		NIX = l->getNIX("indirect");
-		operand = operand.substr(1, operand.size() - 1);
-		address = table->getLine(operand).getAddress();
-	}
-	else if (operand.find(",") < operand.size()) {
-		NIX = l->getNIX("directIndexing");
-		operand = operand.substr(0, operand.find(","));
-		address = table->getLine(operand).getAddress();
+	else if(!table->isFound(operand)){
+		if (operand.find("@") < operand.size()) {
+			NIX = l->getNIX("indirect");
+			operand = operand.substr(1, operand.size() - 1);
+			address = table->getLine(operand).getAddress();
+		}
+		else if (operand.find(",") < operand.size()) {
+			NIX = l->getNIX("directIndexing");
+			operand = operand.substr(0, operand.find(","));
+			address = table->getLine(operand).getAddress();
+		}
+		else {
+			NIX = l->getNIX("directNoIndexing");
+			address = table->getLine(operand).getAddress();
+		}
 	}
 	else {
-		NIX = l->getNIX("directNoIndexing");
-		address = table->getLine(operand).getAddress();
+		cout << "NOT FOUND :( Forward Zift" << endl;
 	}
+
 	cout << "adress is " << address << endl;
 	return NIX;
 }

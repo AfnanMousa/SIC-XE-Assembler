@@ -10,7 +10,6 @@ SYMTable* SYMTable::getInstance() {
 }
 
 symbolTable SYMTable::getLine(string index) {
-	std::cout << index << std::endl;
 	return SYMPOLTable.at(index);
 }
 

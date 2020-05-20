@@ -159,6 +159,7 @@
     <ClCompile Include="Format2.cpp" />
     <ClCompile Include="Format4.cpp" />
     <ClCompile Include="LegalFlagsCombinations.cpp" />
+    <ClCompile Include="LocationsTable.cpp" />
     <ClCompile Include="MakeAddress.cpp" />
     <ClCompile Include="Parsing.cpp" />
     <ClCompile Include="ReadFromFile.cpp" />

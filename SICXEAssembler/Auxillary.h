@@ -17,6 +17,7 @@ public:
 	int hexaToDec(string);
 	int twoscomp(int, int);
 	bool isOutOfRange(string);
+	string add(string s1, string s2);
 };
 
 class ConvertToHexa

@@ -60,3 +60,15 @@ public:
 	void setBASE(string);
 	std::string getBASE();
 };
+
+class Locations {
+private :
+	Locations() {}
+	virtual ~Locations() {}
+	std::map<std::string, std::string> LocationsTable;
+
+public:
+	static Locations* getInstance();
+	string getLabel(string);
+	void addLocation(string, string);
+};
