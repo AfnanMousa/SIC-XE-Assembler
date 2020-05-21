@@ -154,6 +154,7 @@
     <ClCompile Include="addSymbol.cpp" />
     <ClCompile Include="DynamicTables.cpp" />
     <ClCompile Include="FinalTable.cpp" />
+    <ClCompile Include="findADisplacement.cpp" />
     <ClCompile Include="findFlags.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="FormatChecker.cpp" />
@@ -163,13 +164,13 @@
     <ClCompile Include="LocationsTable.cpp" />
     <ClCompile Include="MakeAddress.cpp" />
     <ClCompile Include="Parsing.cpp" />
+    <ClCompile Include="Print.cpp" />
     <ClCompile Include="ReadFromFile.cpp" />
     <ClCompile Include="SICXEAssembler.cpp" />
     <ClCompile Include="Format3.cpp" />
     <ClCompile Include="StaticTables.cpp" />
     <ClCompile Include="symbolTable.cpp" />
     <ClCompile Include="SYMTable.cpp" />
-    <ClCompile Include="toHexa.cpp" />
     <ClCompile Include="Transitions.cpp" />
   </ItemGroup>
   <ItemGroup>

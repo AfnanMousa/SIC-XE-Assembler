@@ -4,12 +4,13 @@ StaticTables::StaticTables() {
 	fillingRegTable();
 	fillingOperationTable();
 	fillingKeyWordsTable();
+	fillingFormat2Table();
 }
 
 static StaticTables* instance;
 
 StaticTables* StaticTables::getInstance() {
-	if (!instance) 
+	if (!instance)
 		instance = new StaticTables;
 	return instance;
 }
@@ -20,6 +21,10 @@ std::string StaticTables::getData(std::string key) {
 
 int StaticTables::occurrencesInOPTable(std::string operation) {
 	return operationTable.count(operation);
+}
+
+int StaticTables::occurrencesInFormat2(std::string operation) {
+	return format2.count(operation);
 }
 
 std::string* StaticTables::getKeyWords() {
@@ -46,15 +51,26 @@ void StaticTables::fillingRegTable() {
 	regTable.insert({ "SW",9 });
 }
 
+void StaticTables::fillingFormat2Table() {
+	format2.insert({ "SVC","B0" });
+	format2.insert({ "SUBR","94" });
+	format2.insert({ "TIXR","B8" });
+	format2.insert({ "SHIFTL","A4" });
+	format2.insert({ "SHIFTR","A8" });
+	format2.insert({ "RMO","AC" });
+	format2.insert({ "ADDR","90" });
+	format2.insert({ "CLEAR","B4" });
+}
+
 void StaticTables::fillingOperationTable() {
-	operationTable.insert({ "SVC","B0" });
-	operationTable.insert({ "SUBR","94" });
-	operationTable.insert({ "TIXR","B8" });
-	operationTable.insert({ "SHIFTL","A4" });
-	operationTable.insert({ "SHIFTR","A8" });
-	operationTable.insert({ "RMO","AC" });
-	operationTable.insert({ "ADDR","90" });
-	operationTable.insert({ "CLEAR","B4" });
+	/*	operationTable.insert({ "SVC","B0" });
+		operationTable.insert({ "SUBR","94" });
+		operationTable.insert({ "TIXR","B8" });
+		operationTable.insert({ "SHIFTL","A4" });
+		operationTable.insert({ "SHIFTR","A8" });
+		operationTable.insert({ "RMO","AC" });
+		operationTable.insert({ "ADDR","90" });
+		operationTable.insert({ "CLEAR","B4" });*/
 	operationTable.insert({ "ADD","18" });
 	operationTable.insert({ "+ADD","18" });
 	operationTable.insert({ "ADDF","58" });
@@ -137,6 +153,5 @@ void StaticTables::fillingKeyWordsTable() {
 	keyWords[4] = "WORD";
 	keyWords[5] = "ORG";
 	keyWords[6] = "EQU";
+	keyWords[7] = "END";
 }
-
-

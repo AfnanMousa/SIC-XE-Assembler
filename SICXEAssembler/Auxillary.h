@@ -42,4 +42,14 @@ protected:
 private:
 };
 
+class Print {
+public:
+	Print() {}
+	virtual ~Print() {}
+	void printSYMTABLE();
+	void printAddressSymbolTable();
+	void printForwardRefTable();
+
+};
+
 #endif // AUXILLARY_H

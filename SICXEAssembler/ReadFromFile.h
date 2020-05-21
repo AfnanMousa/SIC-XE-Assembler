@@ -1,20 +1,20 @@
-#pragma once
 #ifndef READFROMFILE_H
 #define READFROMFILE_H
 #include <vector>
 #include <string>
-#include "symbolTable.h"
+#include "DynamicTables.h"
 
 class ReadFromFile
 {
-public:
-	ReadFromFile();
-	std::vector<std::string> read(std::string FileName);
-	void printTable(symbolTable);
+    public:
+        ReadFromFile();
+        std::vector<std::string> read(std::string FileName);
+       // DynamicTables *dynamicTables = dynamicTables->getInstance();
+		void printTable(symbolTable);
+    protected:
 
-protected:
+    private:
 
-private:
 };
 
 #endif // READFROMFILE_H

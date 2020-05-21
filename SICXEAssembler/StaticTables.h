@@ -10,17 +10,19 @@
 class StaticTables {
 private:
 	std::map<std::string, int> regTable;
-	std::map<std::string, std::string>  operationTable;
-	std::string keyWords[7];
+	std::map<std::string, std::string>  operationTable, format2;
+	std::string keyWords[8];
 	StaticTables();
 	void fillingRegTable();
 	void fillingOperationTable();
 	void fillingKeyWordsTable();
+	void fillingFormat2Table();
 
 public:
 	static StaticTables* getInstance();
-	std::string getData(std::string );
+	std::string getData(std::string);
 	int occurrencesInOPTable(std::string);
+	int occurrencesInFormat2(std::string operation);
 	std::string* getKeyWords();
 	bool operationsIsFound(std::string);
 	bool regIsFound(std::string);

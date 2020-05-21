@@ -14,6 +14,7 @@ public:
 	vector<string> getVector();
 	void setStar(string);
 	string getStar();
+	void addInVector(string);
 
 };
 
@@ -27,7 +28,9 @@ private:
 public:
 	static Locations* getInstance();
 	LocationObject getLabel(string);
+	std::map<std::string, LocationObject> getLocationsTable();
 	void addLocation(string, LocationObject);
 	bool isFound(string);
 	std::map<std::string, std::string> getsymbolLocations();
+	void addLocation(string,string);
 };

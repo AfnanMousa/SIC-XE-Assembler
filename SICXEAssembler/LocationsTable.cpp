@@ -27,9 +27,22 @@ std::map<std::string, std::string> Locations::getsymbolLocations() {
 vector<string> LocationObject::getVector() {
 	return linkedList;
 }
+
+void LocationObject::addInVector(string s) {
+	this->linkedList.push_back(s);
+}
+
 void LocationObject::setStar(string s) {
 
 }
 string LocationObject::getStar() {
 	return star;
+}
+
+std::map<std::string, LocationObject> Locations::getLocationsTable() {
+	return LocationsTable;
+}
+
+void Locations::addLocation(string address, string label) {
+	symbolLocations.insert({address,label});
 }

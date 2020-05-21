@@ -2,17 +2,18 @@
 #include "StaticTables.h"
 #include "Auxillary.h"
 
-Format4::Format4(string operation, string Operator)
+Format4::Format4()
 {
 	//ctor -- i.e Constructor
 	//cout << "Format4 Object is being created" << endl;
-	this->operation = operation;
-	this->operand = Operator;
 }
 
-string Format4::generateOpCode() {
+string Format4::generateOpCode(symbolTable& ob) {
 	cout << "This is format 4" << endl;
 	// Your implementation
+	string operation = ob.getOperation();
+	string operand = ob.getOperand();
+	string opCode;
 	operation = operation.substr(1, operation.size() - 1);
 
 	StaticTables* data = data->getInstance();

@@ -3,6 +3,7 @@
 #include "LocationsTable.h"
 #include "StaticTables.h"
 #include "Command.h"
+#include "Auxillary.h"
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -15,7 +16,7 @@ DynamicTables::DynamicTables()
 }
 
 Locations* locationsTable = locationsTable->getInstance();
-symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index) {
+symbolTable* DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index) {
 	int flag = 0;
 	MakeAddress MakeSure;
 	if ((Label.length() != 0) && (symbolMap->isFound(Label))) {
@@ -74,7 +75,7 @@ symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, stri
 			flag = 2;
 			if (locationsTable->isFound(Label)) {
 				forwRefFound* c = new forwRefFound();
-				c->execute(Label);
+				c->execute(Label,address);
 			}
 		}
 	}
@@ -83,7 +84,7 @@ symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, stri
 		dataTable.insert({ Label, address });
 		if (locationsTable->isFound(Label)) {
 			forwRefFound* c = new forwRefFound();
-			c->execute(Label);
+			c->execute(Label,address);
 		}
 		DynamicTables::setting(strings, line_index, address);
 		//           return true;
@@ -129,7 +130,8 @@ symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, stri
 				else {
 					if (Label.length() == 0) Label = to_string(line_index);
 					flag2 = 3;
-					locationsTable->getsymbolLocations().insert({address,Label});
+					//locationsTable->getsymbolLocations().insert({address,Label});
+					locationsTable->addLocation(address,Label);
 				}
 			}
 		}
@@ -171,7 +173,8 @@ symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, stri
 					else if(is_Aphabet(temp)) {
 						flag2 = 3;
 						if (Label.length() == 0) Label = to_string(line_index);
-						locationsTable->getsymbolLocations().insert({ address,Label });
+						//locationsTable->getsymbolLocations().insert({ address,Label });
+						locationsTable->addLocation(address, Label);
 					}
 					else {
 						cout << " ****** undefined symbol in operand " << '\n';
@@ -201,7 +204,8 @@ symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, stri
 					else if (is_Aphabet(vect[0])) {
 						flag2 = 3;
 						if (Label.length() == 0) Label = to_string(line_index);
-						locationsTable->getsymbolLocations().insert({ address,Label });
+						//locationsTable->getsymbolLocations().insert({ address,Label });
+						locationsTable->addLocation(address, Label);
 					}
 					else {
 						cout << " ****** undefined symbol in operand " << '\n';
@@ -217,7 +221,7 @@ symbolTable DynamicTables::BuildDataTable(string& Label, string& Operation, stri
 
 	}
 
-	return symbolTable;
+	return &symbolTable;
 }
 
 bool DynamicTables::is_digits_of_Hexa(const std::string& str) {
@@ -246,5 +250,5 @@ void DynamicTables::setting(string strings[3], int line_index, string& address) 
 		strings[0] = to_string(line_index);
 	symbolMap->addLine(strings[0], symbolTable);
 
-	cout << symbolMap->getLine(strings[0]).getAddress() << "    " << symbolMap->getLine(strings[0]).getLabel() << "     " << symbolMap->getLine(strings[0]).getOperation() << "      " << symbolMap->getLine(strings[0]).getOperand() << "      " << symbolMap->getLine(strings[0]).getOpcode() << endl;
+	//cout << symbolMap->getLine(strings[0]).getAddress() << "    " << symbolMap->getLine(strings[0]).getLabel() << "     " << symbolMap->getLine(strings[0]).getOperation() << "      " << symbolMap->getLine(strings[0]).getOperand() << "      " << symbolMap->getLine(strings[0]).getOpcode() << endl;
 }

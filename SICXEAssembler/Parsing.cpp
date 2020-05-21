@@ -12,7 +12,7 @@ Parsing::Parsing()
 {
 
 }
-symbolTable Parsing::Check_Indecies(int& line_index, string line) {
+symbolTable* Parsing::Check_Indecies(int& line_index, string line) {
 	bool error = false;
 	string strings[3];
 	std::regex rgx1("\\s*([a-zA-Z0-9]+)\\s+(\\+?[a-zA-Z]+)(\\s+[\\#||\\@]?[\\'a-zA-Z0-9]+)\\s*");
@@ -43,8 +43,8 @@ symbolTable Parsing::Check_Indecies(int& line_index, string line) {
 		cout << "ERROR";
 		error = true;
 	}
-	symbolTable tableObject = dynamicTables.BuildDataTable(strings[0], strings[1], strings[2], address, strings, line_index);
-	tableObject.setError(error);
+	symbolTable* tableObject = dynamicTables.BuildDataTable(strings[0], strings[1], strings[2], address, strings, line_index);
+	(*tableObject).setError(error);
 	//  Parsing:: setting(strings, line_index);
 
 	line_index++;

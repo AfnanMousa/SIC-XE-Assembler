@@ -8,7 +8,7 @@ class Controller
 {
 public:
 	Controller() {}
-	void findOPCode(symbolTable);
+	void findOPCode(symbolTable&);
 
 };
 

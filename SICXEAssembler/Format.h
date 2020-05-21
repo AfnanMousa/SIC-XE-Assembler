@@ -3,6 +3,7 @@
 #define FORMAT_H
 
 #include <iostream>
+#include "symbolTable.h"
 
 using namespace std;
 
@@ -11,46 +12,33 @@ using namespace std;
 class Format {
 
 public:
-	Format() = default;
-	Format(string operation, string Operator);
+	Format() {}
 	virtual ~Format() {}
-	virtual string generateOpCode() = 0;
+	virtual string generateOpCode(symbolTable&) = 0;
 };
 
 class Format2 : public Format {
-private:
-	string operation;
-	string operand;
-	string opCode = "";
 
 public:
-	Format2(string operation, string Operator);
+	Format2();
 	~Format2();
-	string generateOpCode();
+	string generateOpCode(symbolTable&);
 };
 
 class Format3 : public Format {
-private:
-	string operation;
-	string operand;
-	string opCode = "";
 
 public:
-	Format3(string operation, string Operator);
+	Format3();
 	~Format3();
-	string generateOpCode();
+	string generateOpCode(symbolTable&);
 };
 
 class Format4 : public Format {
-private:
-	string operation;
-	string operand;
-	string opCode = "";
 
 public:
-	Format4(string operation, string Operator);
+	Format4();
 	~Format4();
-	string generateOpCode();
+	string generateOpCode(symbolTable&);
 };
 
 #endif // FORMAT_H

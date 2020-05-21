@@ -19,24 +19,26 @@ transitions* t = new transitions();
 string address;
 string displacement;
 SYMTable* table = table->getInstance();
+bool forRef = false;
 
-string findFlags::execute(int format, symbolTable tableObject) {
+string findFlags::execute(int format, symbolTable* tableObject) {
 	string opCode;
 	string NIX;
 	string BPE;
 	cout << "executing findFlags " << endl;
-	cout << "PC " << tableObject.getNextAddress() << endl;
-	NIX = findNiX(tableObject.getOperand(), tableObject);
-
+	cout << "OPCode Was " << (*tableObject).getOpcode() << endl;
+	cout << "PC " << (*tableObject).getNextAddress() << endl;
+	NIX = findNiX((*tableObject).getOperand(), tableObject);
+	if (forRef) return opCode + NIX;
 	if (format == 3) {
 		//IF BASE LESSA
-		string intermediate = t->subtract(address,tableObject.getNextAddress(),12);
+		string intermediate = t->subtract(address,(*tableObject).getNextAddress(),12);
 		if (t->isOutOfRange(intermediate)) {
 			BPE = l->getBPE("Base");
 			cout << "OUT OF RANGE" << endl;
 			intermediate = t->subtract(address,table->getBASE(),12);
 			if (t->isOutOfRange(intermediate)) {
-				tableObject.setError(true);
+				(*tableObject).setError(true);
 			}
 		}
 		else {
@@ -50,16 +52,16 @@ string findFlags::execute(int format, symbolTable tableObject) {
 		displacement = address;
 	}
 	opCode = NIX + BPE+ displacement;
-	cout << "FROM FIND FLAGS THE OPCODE IS " << opCode << endl;
+	cout << "FROM FIND FLAGS THE OPCODE IS " << opCode << "\n" << endl;
 	// Your implementation
 	return opCode;
 }
 
-string findFlags::findNiX(string operand,symbolTable tableObject) {
+string findFlags::findNiX(string operand,symbolTable* tableObject) {
 	SYMTable* table = table->getInstance();
 	
 	string NIX;
-	cout << "HERE" << endl;
+	cout << "FINDING NIX" << endl;
 	if (operand.find("#") < operand.size()) {
 		NIX = l->getNIX("immediate");
 		operand = operand.substr(1, operand.size() - 1);
@@ -90,15 +92,18 @@ string findFlags::findNiX(string operand,symbolTable tableObject) {
 		if (!lo->isFound(operand)) {
 			LocationObject* ob = new LocationObject();
 			ob->setStar("*");
-			ob->getVector().push_back(tableObject.getAddress());
+			ob->addInVector((string)((*tableObject).getAddress()));
+			//ob->getVector().push_back();
 			lo->addLocation(operand, *ob);
 		}
 		else {
-			lo->getLabel(operand).getVector().push_back(tableObject.getAddress());
+			lo->getLabel(operand).getVector().push_back((*tableObject).getAddress());
 		}
+		forRef = true;
+		NIX = l->getNIX("directNoIndexing");
 	}
 
-	cout << "adress is " << address << endl;
+	cout << "adress is " << address << " and NIX is "<<NIX<<endl;
 	return NIX;
 }
 

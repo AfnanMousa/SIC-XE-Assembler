@@ -16,12 +16,11 @@ private:
 	string operand;
 
 public:
-	FormatChecker() = default;
-	FormatChecker(string, string);
+	FormatChecker();
 	~FormatChecker();
-	string format2GenOpCode();
-	string format3GenOpCode();
-	string format4GenOpCode();
+	string format2GenOpCode(symbolTable&);
+	string format3GenOpCode(symbolTable&);
+	string format4GenOpCode(symbolTable&);
 
 };
 

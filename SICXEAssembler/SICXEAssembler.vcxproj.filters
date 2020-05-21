@@ -42,9 +42,6 @@
     <ClCompile Include="Format2.cpp">
       <Filter>Source Files\Formats</Filter>
     </ClCompile>
-    <ClCompile Include="toHexa.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="findFlags.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -89,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="addSymbol.cpp">
       <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="findADisplacement.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Print.cpp">
+      <Filter>Source Files\Auxillary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

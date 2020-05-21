@@ -12,7 +12,7 @@ class symbolTable
 private:
 	string address;
 	string label;
-	string opcode = "";
+	string opcode;
 	string operand;
 	string objectCode;
 	string nextAddress;
@@ -58,5 +58,6 @@ public:
 	int occurrences(string);
 	void setBASE(string);
 	std::string getBASE();
+	std::map<std::string, symbolTable> getTable();
 };
 

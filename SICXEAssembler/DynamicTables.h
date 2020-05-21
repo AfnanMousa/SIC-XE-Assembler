@@ -11,7 +11,7 @@ class DynamicTables
 {
 public:
 	DynamicTables();
-	symbolTable BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index);
+	symbolTable* BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index);
 	bool is_digits_of_Hexa(const std::string& str);
 	bool is_digits(const std::string& str);
 	bool is_Aphabet(const std::string& str);

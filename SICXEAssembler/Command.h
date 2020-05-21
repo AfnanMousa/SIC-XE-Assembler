@@ -15,31 +15,36 @@ class Command
 public:
 	Command() {}
 	virtual ~Command() {}
-	virtual string execute(int format, symbolTable) = 0;
+	virtual string execute(int format, symbolTable*) = 0;
 };
 
 class findFlags : public Command {
 private:
-	string findNiX(string,symbolTable);
+	string findNiX(string,symbolTable*);
 public:
 	findFlags();
 	~findFlags();
-	string execute(int format, symbolTable);
+	string execute(int, symbolTable*);
 
 };
 
-class toHexa : public Command{
+class findADisplacement {
 public:
-	toHexa();
-	~toHexa();
-	string execute(int format, symbolTable);
+	findADisplacement() {}
+	virtual ~findADisplacement() {}
+	std::string execute(string,symbolTable*);
 
+private:
+	std::string format3(string,symbolTable*);
 };
 
 class forwRefFound {
+private: 
+	void editOPCode(symbolTable*,string);
+
 public:
 	forwRefFound() {}
 	virtual ~forwRefFound() {}
-	void execute(string);
+	void execute(string,string);
 };
 #endif // COMMAND_H
