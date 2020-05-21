@@ -28,6 +28,15 @@ void HexaMap(map<string, char>* mp)
 	(*mp)["1111"] = 'F';
 }
 
+string transitions::add(string s1, string s2)
+{
+	/*int dec = hexaToDec(s1) - hexaToDec(s2);
+	if (dec < 0)
+		dec = twoscomp(dec, bits);*/
+	//return decimalToBinary(dec);
+	return "";
+}
+
 string transitions::subtract(string s1, string s2, int bits)
 {
 	int dec = hexaToDec(s1) - hexaToDec(s2);

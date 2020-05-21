@@ -33,10 +33,10 @@ vector<string> ReadFromFile::read(string FileName) {
 					cout << "ERROR";
 					FileInput.close();
 				}
-				else if (tables->occurrencesInOPTable(tableObject.getOperation()) != 0){
-					controller->findOPCode(tableObject);
-				}
-				this->printTable(tableObject);
+			//	else if (tables->occurrencesInOPTable(tableObject.getOperation()) != 0){
+			//		controller->findOPCode(tableObject);
+			//	}
+			//	this->printTable(tableObject);
 			}
 
 		}

@@ -4,6 +4,7 @@
 #include <iostream> 
 #include <sstream> 
 #include "symbolTable.h"
+#include "LocationsTable.h"
 
 //using namespace std;
 
@@ -25,7 +26,7 @@ string findFlags::execute(int format, symbolTable tableObject) {
 	string BPE;
 	cout << "executing findFlags " << endl;
 	cout << "PC " << tableObject.getNextAddress() << endl;
-	NIX = findNiX(tableObject.getOperand());
+	NIX = findNiX(tableObject.getOperand(), tableObject);
 
 	if (format == 3) {
 		//IF BASE LESSA
@@ -42,7 +43,7 @@ string findFlags::execute(int format, symbolTable tableObject) {
 			BPE = l->getBPE("PC");
 			displacement = intermediate;//should be binary
 		}
-		cout << "INTERMEDIATE " << intermediate << endl;
+	//	cout << "INTERMEDIATE " << intermediate << endl;
 	}
 	else if (format == 4) {
 		BPE = l->getBPE("address");
@@ -54,7 +55,7 @@ string findFlags::execute(int format, symbolTable tableObject) {
 	return opCode;
 }
 
-string findFlags::findNiX(string operand) {
+string findFlags::findNiX(string operand,symbolTable tableObject) {
 	SYMTable* table = table->getInstance();
 	
 	string NIX;
@@ -85,6 +86,16 @@ string findFlags::findNiX(string operand) {
 	}
 	else {
 		cout << "NOT FOUND :( Forward Zift" << endl;
+		Locations* lo = lo->getInstance();
+		if (!lo->isFound(operand)) {
+			LocationObject* ob = new LocationObject();
+			ob->setStar("*");
+			ob->getVector().push_back(tableObject.getAddress());
+			lo->addLocation(operand, *ob);
+		}
+		else {
+			lo->getLabel(operand).getVector().push_back(tableObject.getAddress());
+		}
 	}
 
 	cout << "adress is " << address << endl;

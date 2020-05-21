@@ -20,7 +20,7 @@ public:
 
 class findFlags : public Command {
 private:
-	string findNiX(string);
+	string findNiX(string,symbolTable);
 public:
 	findFlags();
 	~findFlags();
@@ -36,4 +36,10 @@ public:
 
 };
 
+class forwRefFound {
+public:
+	forwRefFound() {}
+	virtual ~forwRefFound() {}
+	void execute(string);
+};
 #endif // COMMAND_H
