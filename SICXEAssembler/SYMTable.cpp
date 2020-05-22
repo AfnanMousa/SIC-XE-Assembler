@@ -33,6 +33,6 @@ string SYMTable::getBASE() {
 	return this->BASE;
 }
 
-std::map<std::string, symbolTable> SYMTable::getTable() {
+std::map<std::string, symbolTable>& SYMTable::getTable() {
 	return SYMPOLTable;
 }

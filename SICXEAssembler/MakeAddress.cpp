@@ -58,7 +58,7 @@ string MakeAddress::LocationCounter(string Operation, string Operand) {
 			geek >> x;
 			LOC = x * 3 + LOC;
 		}
-		else if (equalIgnoreCase("" + Operand.at(0), "+")) {
+		else if (Operation.at(0)== '+') {
 			LOC = 4 + LOC;
 		}
 		else if (equalIgnoreCase(Operation, "WORD")) {

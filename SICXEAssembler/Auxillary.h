@@ -17,7 +17,9 @@ public:
 	int hexaToDec(string);
 	int twoscomp(int, int);
 	bool isOutOfRange(string);
+	string addZeroes(string,int);
 	string add(string s1, string s2);
+	string convertBinToHex(string);
 };
 
 class ConvertToHexa

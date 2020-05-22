@@ -14,7 +14,7 @@ private:
 	string label;
 	string opcode;
 	string operand;
-	string objectCode;
+	string key;
 	string nextAddress;
 	string operation;
 	bool error;
@@ -25,7 +25,7 @@ public:
 	void setOpcode(string opcode);
 	void setOperand(string operand);
 	void setOperation(string operand);
-	void setObjectCode(string objectCode);
+	void setKey(string objectCode);
 	void setError(bool err);
 	void setNextAddress(string address);
 	string getAddress();
@@ -33,7 +33,7 @@ public:
 	string getOpcode();
 	string getOperand();
 	string getOperation();
-	string getObjectCode();
+	string getKey();
 	string getNextAddress();
 	bool getError();
 
@@ -47,8 +47,8 @@ class SYMTable {
 private:
 	SYMTable() {}
 	virtual ~SYMTable() {}
-    std::map<std::string, symbolTable> SYMPOLTable;
 	std::string BASE;
+	std::map<std::string, symbolTable> SYMPOLTable;
 
 public:
 	static SYMTable* getInstance();
@@ -58,6 +58,6 @@ public:
 	int occurrences(string);
 	void setBASE(string);
 	std::string getBASE();
-	std::map<std::string, symbolTable> getTable();
+	std::map<std::string, symbolTable>& getTable();
 };
 

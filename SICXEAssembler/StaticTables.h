@@ -11,7 +11,7 @@ class StaticTables {
 private:
 	std::map<std::string, int> regTable;
 	std::map<std::string, std::string>  operationTable, format2;
-	std::string keyWords[8];
+	std::string keyWords[9];
 	StaticTables();
 	void fillingRegTable();
 	void fillingOperationTable();

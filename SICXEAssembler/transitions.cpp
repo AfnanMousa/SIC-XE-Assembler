@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <sstream>
 #include <string>
+#include <bitSet>
 using namespace std;
 
 #include "Auxillary.h"
@@ -90,6 +91,16 @@ int transitions::twoscomp(int num, int bits) {
 	return result + 1;
 }
 
+string transitions::convertBinToHex(string bin)
+{
+	//int l = bin.length();
+	bitset<24> set(bin);
+	stringstream res;
+	res << hex << uppercase << set.to_ulong();
+	return res.str();
+	return bin;
+}
+
 string transitions::decimalToBinary(int decimal) {
 	string bin = "", binTraverse = "";
 	int i = 0;
@@ -107,8 +118,23 @@ string transitions::hexaToBinary(string s1) {
 	return "";
 }
 
+string transitions::addZeroes(string s1,int bits) {
+	if (s1.length() >= bits)
+		return s1;
+
+	//cout << bits << "\t" << s1.length() << endl;
+	string s = "";
+	for (int i = 0;i < (bits - s1.length());i++) {
+		s += "0";
+	}
+	s1 = s + s1;
+	return s1;
+}
+
 bool transitions::isOutOfRange(string s1) {
-	int dec = hexaToDec(s1);
+	string s = convertBinToHex(s1);
+	int dec = hexaToDec(s);
+	cout << "Decimal of " << s1 << " is " << dec << endl;
 	if (dec > 2047 || dec < -2048)
 		return true;
 	return false;
@@ -153,7 +179,12 @@ ConvertToHexa::ConvertToHexa()
 
 string ConvertToHexa::IntToHexa(int address) {
 	char hexaDeciNum[100];
-
+	string Output;
+	// counter for hexadecimal number array
+	int i = 0;
+	if (address == 0)
+		Output = to_string(0);
+	else
 	// counter for hexadecimal number array
 	int i = 0;
 	while (address != 0)
@@ -178,7 +209,6 @@ string ConvertToHexa::IntToHexa(int address) {
 
 		address = address / 16;
 	}
-	string Output;
 	for (int j = i - 1; j >= 0; j--) {
 		Output = Output + hexaDeciNum[j];
 	}

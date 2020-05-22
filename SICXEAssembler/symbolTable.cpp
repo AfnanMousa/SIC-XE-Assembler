@@ -1,5 +1,6 @@
 #include "symbolTable.h"
 
+
 void symbolTable::setAddress(string address)
 {
 	this->address = address;
@@ -25,9 +26,9 @@ void symbolTable::setOperation(string operation)
 	this->operation = operation;
 }
 
-void symbolTable::setObjectCode(string objectCode)
+void symbolTable::setKey(string objectCode)
 {
-	this->objectCode = objectCode;
+	this->key = objectCode;
 }
 
 void symbolTable::setError(bool err)
@@ -65,9 +66,9 @@ string symbolTable::getOperation()
 	return operation;
 }
 
-string symbolTable::getObjectCode()
+string symbolTable::getKey()
 {
-	return objectCode;
+	return key;
 }
 
 string symbolTable::getNextAddress()
@@ -82,6 +83,14 @@ bool symbolTable::getError()
 
 symbolTable::symbolTable()
 {
+	address = "";
+	label = "";
+	opcode = "";
+	operand = "";
+	key = "";
+	nextAddress = "";
+	operation = "";
+	error = false;
 }
 
 symbolTable::~symbolTable()

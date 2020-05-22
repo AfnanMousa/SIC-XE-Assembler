@@ -154,4 +154,5 @@ void StaticTables::fillingKeyWordsTable() {
 	keyWords[5] = "ORG";
 	keyWords[6] = "EQU";
 	keyWords[7] = "END";
+	keyWords[8] = "BASE";
 }

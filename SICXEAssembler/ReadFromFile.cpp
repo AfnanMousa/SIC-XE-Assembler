@@ -20,6 +20,7 @@ vector<string> ReadFromFile::read(string FileName) {
 	ifstream FileInput;
 	vector<string> book;
 	Controller* controller = new Controller();
+	SYMTable* sym = sym->getInstance();
 	StaticTables* tables = tables->getInstance();
 	FileInput.open(FileName);
 	Parsing pars;
@@ -33,15 +34,16 @@ vector<string> ReadFromFile::read(string FileName) {
 				//bool error = (*tableObject).getError();
 
 
-				symbolTable* tableObject = pars.Check_Indecies(line_index, Line);
-				bool error = (*tableObject).getError();
-				this->printTable(*tableObject);
+				symbolTable tableObject = pars.Check_Indecies(line_index, Line);
+				bool error = (tableObject).getError();
+				this->printTable(tableObject);
+
 				if (error == true) {
 					cout << "ERROR";
 					FileInput.close();
 				}
-				else if (tables->occurrencesInOPTable((*tableObject).getOperation()) != 0) {
-					controller->findOPCode(*tableObject);
+				else if (tables->occurrencesInOPTable((tableObject).getOperation()) != 0 && (tableObject).getOperation()!="BASE") {
+					controller->findOPCode(tableObject, line_index-1);
 				}
 
 
@@ -49,9 +51,9 @@ vector<string> ReadFromFile::read(string FileName) {
 					cout << "ERROR";
 					FileInput.close();
 				}*/
-
+				//line_index++;
 			}
-
+			
 		}
 		FileInput.close();
 

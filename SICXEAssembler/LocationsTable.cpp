@@ -16,6 +16,10 @@ void Locations::addLocation(string i, LocationObject line) {
 	LocationsTable.insert({ i,line });
 }
 
+void Locations::eraseLocation(string i) {
+	LocationsTable.erase(i);
+}
+
 bool Locations::isFound(string label) {
 	return LocationsTable.find(label) != LocationsTable.end();
 }

@@ -33,4 +33,5 @@ public:
 	bool isFound(string);
 	std::map<std::string, std::string> getsymbolLocations();
 	void addLocation(string,string);
+	void eraseLocation(string);
 };

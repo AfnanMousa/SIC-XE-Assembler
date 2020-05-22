@@ -16,8 +16,9 @@ DynamicTables::DynamicTables()
 }
 
 Locations* locationsTable = locationsTable->getInstance();
-symbolTable* DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index) {
+symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index) {
 	int flag = 0;
+	symbolTable* sym = new symbolTable;
 	MakeAddress MakeSure;
 	if ((Label.length() != 0) && (symbolMap->isFound(Label))) {
 		if (MakeSure.equalIgnoreCase(Operation, "WORD")) {
@@ -80,13 +81,15 @@ symbolTable* DynamicTables::BuildDataTable(string& Label, string& Operation, str
 		}
 	}
 
+
+
 	if (flag == 1) {
 		dataTable.insert({ Label, address });
 		if (locationsTable->isFound(Label)) {
 			forwRefFound* c = new forwRefFound();
 			c->execute(Label,address);
 		}
-		DynamicTables::setting(strings, line_index, address);
+		sym = DynamicTables::setting(strings, line_index, address);
 		//           return true;
 	}
 	int flag2 = 1;
@@ -139,7 +142,6 @@ symbolTable* DynamicTables::BuildDataTable(string& Label, string& Operation, str
 			if (MakeSure.equalIgnoreCase(Operation, "START") && (Operand.length() < 5)) {
 				if (Label.length() != 0) {
 					labelstart = Label;
-
 				}
 				flag2 = 3;
 			}
@@ -215,13 +217,15 @@ symbolTable* DynamicTables::BuildDataTable(string& Label, string& Operation, str
 		}
 	}
 
+
 	if ((flag2 == 3) || (flag == 2)) {
-
-		DynamicTables::setting(strings, line_index, address);
-
+		sym = DynamicTables::setting(strings, line_index, address);
+		cout << "After Settings " << endl;
+		cout << (*sym).getAddress() << "    " << (*sym).getLabel() << "     " << (*sym).getOperation() << "      " << (*sym).getOperand() << "      " << (*sym).getOpcode() << endl;
+		//symbolTable sym = symbolMap->getLine(strings[0]);
 	}
 
-	return &symbolTable;
+	return *sym;
 }
 
 bool DynamicTables::is_digits_of_Hexa(const std::string& str) {
@@ -234,21 +238,30 @@ bool DynamicTables::is_Aphabet(const std::string& str) {
 	return str.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") == std::string::npos;
 }
 
-void DynamicTables::setting(string strings[3], int line_index, string& address) {
+symbolTable* DynamicTables::setting(string strings[3], int line_index, string& address) {
+	symbolTable* sym = new symbolTable();
 	if (strings[1] == "ORG") {
-		symbolTable.setAddress("");
+		sym->setAddress("");
 	}
 	else {
-		symbolTable.setAddress(address);
+		sym->setAddress(address);
 	}
 	address = makeAddress.LocationCounter(strings[1], strings[2]);
-	symbolTable.setLabel(strings[0]);
-	symbolTable.setNextAddress(address);
-	symbolTable.setOperation(strings[1]);
-	symbolTable.setOperand(strings[2]);
-	if (strings[0].length() == 0)
+	sym->setLabel(strings[0]);
+	sym->setNextAddress(address);
+	sym->setOperation(strings[1]);
+	sym->setOperand(strings[2]);
+	if (strings[0].length() == 0 || is_digits(strings[0])) {
 		strings[0] = to_string(line_index);
-	symbolMap->addLine(strings[0], symbolTable);
+		sym->setLabel("");
+	}
+	sym->setKey(strings[0]);
+	//cout <<"************************* " <<strings[0]<<endl;
+	symbolMap->addLine(strings[0], *sym);
 
-	//cout << symbolMap->getLine(strings[0]).getAddress() << "    " << symbolMap->getLine(strings[0]).getLabel() << "     " << symbolMap->getLine(strings[0]).getOperation() << "      " << symbolMap->getLine(strings[0]).getOperand() << "      " << symbolMap->getLine(strings[0]).getOpcode() << endl;
+	cout << "\nFROM DYNAMIC TABLES " << endl;
+
+	cout << symbolMap->getLine(strings[0]).getAddress() << "    " << symbolMap->getLine(strings[0]).getLabel() << "     " << symbolMap->getLine(strings[0]).getOperation() << "      " << symbolMap->getLine(strings[0]).getOperand() << "      " << symbolMap->getLine(strings[0]).getOpcode() << endl;
+
+	return sym;
 }

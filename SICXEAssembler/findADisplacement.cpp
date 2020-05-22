@@ -21,9 +21,12 @@ std::string findADisplacement::format3(std::string address, symbolTable* tableOb
 	SYMTable* SymbolTab = SymbolTab->getInstance();
 	legalFlagsCombinations* flags = flags->getInstance();
 	string BPE;
-	std::string displacement = t->subtract(address, (*tableObject).getNextAddress(), 3);
+	cout << "TA = " << address << "\t" << " PC of " << (*tableObject).getOperation() << " is " << (*tableObject).getNextAddress() << endl;
+	std::string displacement = t->subtract(address, (*tableObject).getNextAddress(), 12);
+	cout << "Displacement is " << displacement << endl;
 	if (t->isOutOfRange(displacement)) {
-		displacement = t->subtract(address, SymbolTab->getBASE(), 3);
+		cout << "Will be Base" << endl;
+		displacement = t->subtract(address, SymbolTab->getBASE(), 12);
 		if (t->isOutOfRange(displacement)) {
 			(*tableObject).setError(true);
 		}
@@ -34,6 +37,9 @@ std::string findADisplacement::format3(std::string address, symbolTable* tableOb
 	else {
 		BPE = flags->getBPE("PC");
 	}
+	displacement = t->addZeroes(displacement, 12);
+	cout << "After adding zeroes " << displacement << endl;
+
 	displacement = BPE + displacement;
 	return displacement;
 }

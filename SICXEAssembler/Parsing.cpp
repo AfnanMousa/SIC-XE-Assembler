@@ -12,7 +12,7 @@ Parsing::Parsing()
 {
 
 }
-symbolTable* Parsing::Check_Indecies(int& line_index, string line) {
+symbolTable Parsing::Check_Indecies(int& line_index, string line) {
 	bool error = false;
 	string strings[3];
 	std::regex rgx1("\\s*([a-zA-Z0-9]+)\\s+(\\+?[a-zA-Z]+)(\\s+[\\#||\\@]?[\\'a-zA-Z0-9]+)\\s*");
@@ -43,17 +43,25 @@ symbolTable* Parsing::Check_Indecies(int& line_index, string line) {
 		cout << "ERROR";
 		error = true;
 	}
-	symbolTable* tableObject = dynamicTables.BuildDataTable(strings[0], strings[1], strings[2], address, strings, line_index);
-	(*tableObject).setError(error);
-	//  Parsing:: setting(strings, line_index);
+	symbolTable& tableObject = dynamicTables.BuildDataTable(strings[0], strings[1], strings[2], address, strings, line_index);
+	cout << "IS " <<(tableObject).getAddress() << "    " << (tableObject).getLabel() << "     " << (tableObject).getOperation() << "      " << (tableObject).getOperand() << "      " << (tableObject).getOpcode() << endl;
+	(tableObject).setError(error);
+	string label = tableObject.getLabel();
+	cout << "From Parser " << label << endl;
+	if (tableObject.getLabel().length() == 0) {
+		label = to_string(line_index);
+	}
+	SYMTable* symbolMap = symbolMap->getInstance();
 
+	//symbolMap->getLine
+	//symbolMap->SYMPOLTable.at(label).setOperation("HAHAHAHAHAHAHAH");
 	line_index++;
-	return tableObject;
+	return *(&tableObject);
 }
 
 bool Parsing::check(string operation) {
 	StaticTables* data = data->getInstance();
-	if (data->occurrencesInOPTable(operation) == 1 || count(data->getKeyWords(), data->getKeyWords() + 7, operation) == 1)
+	if (data->occurrencesInOPTable(operation) == 1 || count(data->getKeyWords(), data->getKeyWords() +9, operation) ==1)
 		return true;
 	return false;
 }
