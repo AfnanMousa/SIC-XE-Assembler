@@ -1,17 +1,16 @@
 #include "Command.h"
 #include "LegalFlagsCombinations.h"
 #include "Auxillary.h"
-#include <iostream> 
-#include <sstream> 
+#include <iostream>
+#include <sstream>
 #include "symbolTable.h"
 #include "LocationsTable.h"
 
-//using namespace std;
+using namespace std;
 
 findFlags::findFlags()
 {
-	//ctor -- i.e Constructor
-	cout << "Command findFlags Object is being created" << endl;
+
 }
 
 legalFlagsCombinations* l = l->getInstance();
@@ -21,107 +20,135 @@ string displacement;
 SYMTable* table = table->getInstance();
 bool forRef = false;
 bool isLabel = false;
+bool immediateAdd = false;
+int Format;
 
 string findFlags::execute(int format, symbolTable* tableObject) {
 	string opCode;
 	string NIX;
 	string BPE;
-	cout << "executing findFlags " << endl;
-	cout << "OPCode Was " << (*tableObject).getOpcode() << endl;
-	cout << "PC " << (*tableObject).getNextAddress() << endl;
+	Format = format;
+	ConvertHexaToBinary* toBin = new ConvertHexaToBinary();
+	if (tableObject->getOperand().length() == 0) return "000000000000000000";
 	NIX = findNiX((*tableObject).getOperand(), tableObject);
 	if (forRef) return opCode + NIX;
 	if (format == 3) {
-		//IF BASE LESSA
-		//if (isLabel) {
-			string intermediate = t->subtract(address, (*tableObject).getNextAddress(), 12);
-			if (t->isOutOfRange(intermediate)) {
+			bool intermediate = t->subtractDec(address, (*tableObject).getNextAddress());//bta5od hexa
+			if (immediateAdd) {
+				displacement = toBin->hexaToBinary(address);
+				BPE = l->getBPE("displacement");
+			}
+			else if ((intermediate)) {
 				BPE = l->getBPE("Base");
-				cout << "OUT OF RANGE" << endl;
-				intermediate = t->subtract(address, table->getBASE(), 12);
-				displacement = intermediate;//should be binary
-				if (t->isOutOfRange(intermediate)) {
-					(*tableObject).setError(true);
+				intermediate = t->subtractDec(address, table->getBASE());
+				if (table->getBASE() != "") {
+					string base = table->getLine(table->getBASE()).getAddress();
+					displacement = t->subtract(address, (base), 12);
+					//cout << toBin->hexaToBinary(base) << endl;
+					if ((intermediate)) {
+						table->getTable().at((*tableObject).getKey()).setError(true);
+						table->getTable().at((*tableObject).getKey()).setErrorStr("Addressing Out Of Range");
+						BPE = "000";
+					}
+				}
+				else {
+					table->getTable().at((*tableObject).getKey()).setError(true);
+					table->getTable().at((*tableObject).getKey()).setErrorStr("Addressing Out Of Range And Base isn't specified");
 					BPE = "000";
 				}
 			}
-			else {
+			else{
 				BPE = l->getBPE("PC");
-				displacement = intermediate;//should be binary
+				displacement = t->subtract(address, (*tableObject).getNextAddress(), 12);
 			}
-		//}
-	//	cout << "INTERMEDIATE " << intermediate << endl;
+			displacement = t->addZeroes(displacement, 12);
 	}
 	else if (format == 4) {
 		BPE = l->getBPE("address");
-		displacement = address;
+		address = t->addZeroes(address, 5);
+		displacement = toBin->hexaToBinary(address);
 	}
 	opCode = NIX + BPE+ displacement;
-	cout << "FROM FIND FLAGS THE OPCODE IS " << opCode << "\n" << endl;
 	return opCode;
 }
 
 string findFlags::findNiX(string operand,symbolTable* tableObject) {
 	SYMTable* table = table->getInstance();
-	
 	string NIX;
-	cout << "FINDING NIX" << endl;
+	immediateAdd = false;
 	if (operand.find("#") < operand.size()) {
 		NIX = l->getNIX("immediate");
 		operand = operand.substr(1, operand.size() - 1);
-		stringstream geek(operand);
-		int x = 0;
-		geek >> x;
-		address = t->decimalToBinary(x);
-		t->addZeroes(address,3);
-		cout << "Address is " << address;
-		forRef = false;
-	}
-	else if(!table->isFound(operand)){
-		if (operand.find("@") < operand.size()) {
-			NIX = l->getNIX("indirect");
-			operand = operand.substr(1, operand.size() - 1);
-			address = table->getLine(operand).getAddress();
+		if (operand.find_first_not_of("0123456789")) {
+			ConvertHexaToBinary* toBin = new ConvertHexaToBinary();
+			stringstream geek(operand);
+			int x = 0;
+			geek >> x;
+			address = t->decToHexa(x);
 			forRef = false;
-		}
-		else if (operand.find(",") < operand.size()) {
-			NIX = l->getNIX("directIndexing");
-			operand = operand.substr(0, operand.find(","));
-			address = table->getLine(operand).getAddress();
-			forRef = false;
+			immediateAdd = true;
 		}
 		else {
-			NIX = l->getNIX("directNoIndexing");
-			address = table->getLine(operand).getAddress();
-			forRef = false;
+			if (!table->isFound(operand)) {
+				address = table->getLine(operand).getAddress();
+				forRef = false;
+			}
+			else {
+				forWRef(operand, tableObject);
+			}
 		}
+		return NIX;
 	}
-	else if (!operand.length() == 0){
-		cout << "NOT FOUND :( Forward Zift" << endl;
-		Locations* lo = lo->getInstance();
-		if (!lo->isFound(operand)) {
-			LocationObject* ob = new LocationObject();
-			ob->setStar("*");
-			ob->addInVector((string)((*tableObject).getAddress()));
-			//ob->getVector().push_back();
-			if(operand.at(0) == '#'||operand.at(0) == '@') operand = operand.substr(1, operand.size() - 1);
-			lo->addLocation(operand, *ob);
-		}
-		else {
-			lo->getLabel(operand).getVector().push_back((*tableObject).getAddress());
-		}
-		forRef = true;
+
+	else if (operand.find("@") < operand.size()) {
+		NIX = l->getNIX("indirect");
+		operand = operand.substr(1, operand.size() - 1);
+	}
+
+	else if (operand.find(",") < operand.size()) {
+		NIX = l->getNIX("directIndexing");
+		operand = operand.substr(0, operand.find(","));
+	}
+
+	else {
 		NIX = l->getNIX("directNoIndexing");
 	}
 
-	cout << "adress is " << address << " and NIX is "<<NIX<<endl;
+	if (!table->isFound(operand)) {
+		address = table->getLine(operand).getAddress();
+		forRef = false;
+	}
+	else {
+		forWRef(operand, tableObject);
+		forRef = true;
+	}
 	return NIX;
+}
+
+string findFlags::forWRef(string operand, symbolTable* tableObject){
+	Locations* lo = lo->getInstance();
+	if (!lo->isFound(operand)) {
+		LocationObject* ob = new LocationObject();
+		ob->setStar("*");
+		ob->addInVector((string)((*tableObject).getAddress()));
+		if (operand.at(0) == '#' || operand.at(0) == '@') operand = operand.substr(1, operand.size() - 1);
+		lo->addLocation(operand, *ob);
+	}
+	else if (operand.length() == 0)
+		address = "000000000000";
+	else {
+		LocationObject ob = lo->getLabel(operand);
+		if ((*tableObject).getAddress() == "A")
+//			cout << "HERE" << endl;
+		ob.getVector().push_back((*tableObject).getAddress());
+		lo->getLabel(operand).linkedList.push_back((*tableObject).getAddress());
+	}
+	forRef = true;
+	return l->getNIX("directNoIndexing");
 }
 
 findFlags::~findFlags()
 {
-	//dtor -- i.e distructor
-	cout << "Command findFlags Object is being deleted" << endl;
 	delete l;
 	delete t;
 	//delete r;

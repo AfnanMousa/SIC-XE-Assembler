@@ -15,6 +15,14 @@ StaticTables* StaticTables::getInstance() {
 	return instance;
 }
 
+std::string StaticTables::getReg(std::string key) {
+	return std::to_string(regTable.at(key));
+}
+
+std::string StaticTables::getFormat2Data(std::string key) {
+	return this->format2.at(key);
+}
+
 std::string StaticTables::getData(std::string key) {
 	return this->operationTable.at(key);
 }
@@ -60,6 +68,7 @@ void StaticTables::fillingFormat2Table() {
 	format2.insert({ "RMO","AC" });
 	format2.insert({ "ADDR","90" });
 	format2.insert({ "CLEAR","B4" });
+	format2.insert({ "COMPR","A0" });
 }
 
 void StaticTables::fillingOperationTable() {
@@ -79,6 +88,7 @@ void StaticTables::fillingOperationTable() {
 	operationTable.insert({ "COMP","28" });
 	operationTable.insert({ "+COMP","28" });
 	operationTable.insert({ "COMPF","88" });
+	operationTable.insert({ "CLEAR","B4" });
 	operationTable.insert({ "COMPR","A0" });
 	operationTable.insert({ "DIV","24" });
 	operationTable.insert({ "+DIV","24" });
@@ -104,6 +114,7 @@ void StaticTables::fillingOperationTable() {
 	operationTable.insert({ "+LDL","08" });
 	operationTable.insert({ "LDS","6C" });
 	operationTable.insert({ "LDT","74" });
+	operationTable.insert({ "+LDT","74" });
 	operationTable.insert({ "LDX","04" });
 	operationTable.insert({ "+LDX","04" });
 	operationTable.insert({ "LPS","D0" });

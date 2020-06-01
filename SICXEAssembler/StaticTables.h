@@ -23,6 +23,8 @@ public:
 	std::string getData(std::string);
 	int occurrencesInOPTable(std::string);
 	int occurrencesInFormat2(std::string operation);
+	std::string getFormat2Data(std::string key);
+	std::string getReg(std::string key);
 	std::string* getKeyWords();
 	bool operationsIsFound(std::string);
 	bool regIsFound(std::string);

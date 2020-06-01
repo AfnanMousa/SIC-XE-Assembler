@@ -15,6 +15,11 @@ symbolTable SYMTable::getLine(string index) {
 
 void SYMTable::addLine(string i, symbolTable line) {
 	SYMPOLTable.insert({i,line});
+	v.push_back(i);
+}
+
+vector<string>  SYMTable::getKeys() {
+	return v;
 }
 
 bool SYMTable::isFound(string label) {

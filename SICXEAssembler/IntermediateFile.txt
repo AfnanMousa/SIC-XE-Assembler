@@ -1,0 +1,51 @@
+
+
+
+Symbol table with Object Codes
+0         COPY      START     0                                       
+0         FIRST     STL       RETADR    17202D                        
+3                   LDB       #LENGTH   69202D                        
+6         CLOOP     +JSUB     RDREC     4B101036                      
+A                   LDA       LENGTH    32026                         
+D                   COMP      #0        290000                        
+10                  JEQ       ENDFIL    332007                        
+13                  +JSUB     WRREC     4B10105D                      
+17                  J         CLOOP     3F2FEC                        
+1A        ENDFIL    LDA       EOF       32010                         
+1D                  STA       BUFFER    F2016                         
+20                  LDA       #3        10003                         
+23                  STA       LENGTH    F200D                         
+26                  +JSUB     WRREC     4B10105D                      
+2A                  J         @RETADR   3E2003                        
+2D        EOF       BYTE      C'EOF'                                  
+30        RETADR    RESW      1                                       
+33        LENGTH    RESW      1                                       
+36        BUFFER    RESB      4096                                    
+1036      RDREC     CLEAR     X         B410                          
+1038                CLEAR     A         B400                          
+103A                CLEAR     S         B440                          
+103C                +LDT      #4096     75101000                      
+1040      RLOOP     TD        INPUT     E32019                        
+1043                JEQ       RLOOP     332FFA                        
+1046                RD        INPUT     DB2013                        
+1049                COMPR     A,S       A004                          
+104B                JEQ       EXIT      332008                        
+104E                STCH      BUFFER,X  57C003                        
+1051                TIXR      T         B850                          
+1053                JLT       RLOOP     3B2FEA                        
+1056      EXIT      STX       LENGTH    134000                        
+1059                RSUB                4F0000                        
+****** RSUB doesn't need an operand
+105C      INPUT     BYTE      X'F1'                                   
+105D      WRREC     CLEAR     X         B410                          
+105F                LDT       LENGTH    774000                        
+1062      WLOOP     TD        OUTPUT    E32011                        
+1065                JEQ       WLOOP     332FFA                        
+1068                LDCH      BUFFER,X  53C003                        
+106B                WD        OUTPUT    DF2008                        
+106E                TIXR      T         B850                          
+1070                JLT       WLOOP     3B2FEF                        
+1073                RSUB                4F0000                        
+****** RSUB doesn't need an operand
+1076      OUTPUT    BYTE      X'05'                                   
+1077                END       FIRST                                   

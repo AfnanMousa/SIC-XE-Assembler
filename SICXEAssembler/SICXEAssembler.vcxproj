@@ -163,6 +163,7 @@
     <ClCompile Include="LegalFlagsCombinations.cpp" />
     <ClCompile Include="LocationsTable.cpp" />
     <ClCompile Include="MakeAddress.cpp" />
+    <ClCompile Include="ObjectProgram.cpp" />
     <ClCompile Include="Parsing.cpp" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="ReadFromFile.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="symbolTable.cpp" />
     <ClCompile Include="SYMTable.cpp" />
     <ClCompile Include="Transitions.cpp" />
+    <ClCompile Include="WriteInFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h" />
@@ -183,6 +185,7 @@
     <ClInclude Include="LegalFlagsCombinations.h" />
     <ClInclude Include="LocationsTable.h" />
     <ClInclude Include="MakeAddress.h" />
+    <ClInclude Include="ObjectProgram.h" />
     <ClInclude Include="Parsing.h" />
     <ClInclude Include="ReadFromFile.h" />
     <ClInclude Include="DynamicTables.h" />

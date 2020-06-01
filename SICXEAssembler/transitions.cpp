@@ -38,12 +38,38 @@ string transitions::add(string s1, string s2)
 	return "";
 }
 
+string transitions::decToHexa(int decimal) {
+	string hexa = "", hexaTraverse = "";
+	int i = 0;
+	while (decimal != 0)
+	{
+		if (decimal % 16 < 10)
+			hexaTraverse += (decimal % 16) + 48;
+		else
+			hexaTraverse += (decimal % 16) + 55;
+		decimal = decimal / 16;
+	}
+	for (int j = hexaTraverse.size() - 1; j >= 0; j--)
+		hexa += hexaTraverse[j];
+	return hexa;
+}
+
 string transitions::subtract(string s1, string s2, int bits)
 {
 	int dec = hexaToDec(s1) - hexaToDec(s2);
 	if (dec < 0)
 		dec = twoscomp(dec, bits);
 	return decimalToBinary(dec);
+}
+
+bool transitions::subtractDec(string s1, string s2)
+{
+	int dec = hexaToDec(s1) - hexaToDec(s2);
+//	cout << "Decimal of " << s1 << " is " << dec << endl;
+	if (dec > 2047 || dec < -2048)
+		return true;
+	//else if (dec < (2047 * 2)) return true;
+	return false;
 }
 
 int transitions::hexaToDec(string hexa)
@@ -94,10 +120,18 @@ int transitions::twoscomp(int num, int bits) {
 string transitions::convertBinToHex(string bin)
 {
 	//int l = bin.length();
-	bitset<24> set(bin);
-	stringstream res;
-	res << hex << uppercase << set.to_ulong();
-	return res.str();
+	if (bin.size() == 24) {
+		bitset<24> set(bin);
+		stringstream res;
+		res << hex << uppercase << set.to_ulong();
+		return res.str();
+	}
+	else if (bin.size() == 32) {
+		bitset<32> set(bin);
+		stringstream res;
+		res << hex << uppercase << set.to_ulong();
+		return res.str();
+	}
 	return bin;
 }
 
@@ -134,9 +168,10 @@ string transitions::addZeroes(string s1,int bits) {
 bool transitions::isOutOfRange(string s1) {
 	string s = convertBinToHex(s1);
 	int dec = hexaToDec(s);
-	cout << "Decimal of " << s1 << " is " << dec << endl;
+//	cout << "Decimal of " << s1 << " is " << dec << endl;
 	if (dec > 2047 || dec < -2048)
 		return true;
+	//else if (dec < (2047 * 2)) return true;
 	return false;
 }
 

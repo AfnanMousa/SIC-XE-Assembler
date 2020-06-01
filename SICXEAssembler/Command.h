@@ -21,6 +21,7 @@ public:
 class findFlags : public Command {
 private:
 	string findNiX(string,symbolTable*);
+	string forWRef(string operand, symbolTable* tableObject);
 public:
 	findFlags();
 	~findFlags();

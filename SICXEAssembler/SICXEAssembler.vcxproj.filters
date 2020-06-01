@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Parser">
       <UniqueIdentifier>{9b33cb94-c01f-4141-b530-cf4cf811ffae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ObjectProgram">
+      <UniqueIdentifier>{c27dae3a-0926-45a2-ad6f-a9aee3505eb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SICXEAssembler.cpp">
@@ -41,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="Format2.cpp">
       <Filter>Source Files\Formats</Filter>
-    </ClCompile>
-    <ClCompile Include="findFlags.cpp">
-      <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="StaticTables.cpp">
       <Filter>Source Files\Data</Filter>
@@ -93,6 +93,15 @@
     <ClCompile Include="Print.cpp">
       <Filter>Source Files\Auxillary</Filter>
     </ClCompile>
+    <ClCompile Include="findFlags.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectProgram.cpp">
+      <Filter>Source Files\ObjectProgram</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteInFile.cpp">
+      <Filter>Source Files\Auxillary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Format.h">
@@ -135,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LocationsTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

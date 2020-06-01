@@ -14,9 +14,16 @@ DynamicTables::DynamicTables()
 {
 	//ctor
 }
+static DynamicTables* instance;
 
+DynamicTables* DynamicTables::getInstance() {
+    if (!instance)
+        instance = new DynamicTables;
+    return instance;
+}
 Locations* locationsTable = locationsTable->getInstance();
-symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index) {
+symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index,bool error, string errorStr) {
+	string exp = evaluateExp(Operand, error, errorStr);
 	int flag = 0;
 	symbolTable* sym = new symbolTable;
 	MakeAddress MakeSure;
@@ -29,35 +36,76 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 				flag = 1;
 			}
 			else {
-				cout << " ****** extra characters at end of statement" << '\n';
+                error = true;
+				errorStr = " ****** extra characters at end of statement";
+	//			cout << " ****** extra characters at end of statement" << '\n';
 			}
 		}
 		else if (MakeSure.equalIgnoreCase(Operation, "BYTE")) {
+			string temp = Operand;
 			if ((Operand.at(0) == 'X') || (Operand.at(0) == 'x')) {
-				if (((Operand.length() % 2 == 0) && ((Operand.length() > 0) && (Operand.length() < 15)))) {
-					if (is_digits_of_Hexa(Operand)) {
-						flag = 1;
+				temp.erase(temp.begin() + 0);
+				if (temp.find("\'") == 0) {
+					temp.erase(temp.begin() + 0);
+					if (temp.find("\'") == temp.length() - 1) {
+						temp.erase(temp.length() - 1);
+						if (((temp.length() % 2 == 0) && ((temp.length() > 0) && (temp.length() < 15)))) {
+							if (is_digits_of_Hexa(temp)) {
+								flag = 1;
+							}
+							else {
+                                    error = true;
+                                    errorStr = "  ****** not a hexadecimal string";
+						//		cout << " ****** not a hexadecimal string" << '\n';
+							}
+						}
+						else {
+                                error = true;
+                                errorStr = "too long hexa-decimal string";
+					//		cout << " ****** too long hexa-decimal string " << '\n';
+						}
 					}
 					else {
-						cout << " ****** not a hexadecimal string" << '\n';
+                             error = true;
+                            errorStr = " ****** illegal operand ";
+					//	cout << " ****** illegal operand " << '\n';
 					}
 				}
 				else {
-					cout << " ****** too long hexa-decimal string " << '\n';
+                        error = true;
+                    errorStr = " ****** extra characters at end of statement";
+				//	cout << " ****** extra characters at end of statement" << '\n';
 				}
 			}
 			else if ((Operand.at(0) == 'C') || (Operand.at(0) == 'c')) {
-				if ((Operand.length() > 0) && (Operand.length() < 16)) {
-					flag = 1;
+				string temp2 = Operand;
+				temp2.erase(temp2.begin() + 0);
+				if (temp2.find("\'") == 0) {
+					temp2.erase(temp2.begin() + 0);
+					if (temp2.find("\'") == temp2.length() - 1) {
+						temp2.erase(temp2.length() - 1);
+						if ((temp2.length() > 0) && (temp2.length() < 16)) {
+							flag = 1;
+						}
+						else {
+                            error = true;
+                        errorStr = " ****** too long character string ";
+						//	cout << " ****** too long character string " << '\n';
+						}
+					}
+					else {
+                            error = true;
+                        errorStr = " ****** illegal operand";
+				//		cout << " ****** illegal operand" << '\n';
+					}
 				}
-				else {
-					cout << " ****** too long character string " << '\n';
-				}
-			}
-			else {
-				cout << " ****** illegal operand" << '\n';
-			}
 
+				else {
+                        error = true;
+                        errorStr = " ****** extra characters at end of statement";
+				//	cout << " ****** extra characters at end of statement" << '\n';
+				}
+			}
 		}
 		else if (((MakeSure.equalIgnoreCase(Operation, "RESB")) || (MakeSure.equalIgnoreCase(Operation, "RESW")))) {
 			if ((Operand.length() > 0) && (Operand.length() < 5)) {
@@ -65,18 +113,22 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 					flag = 1;
 				}
 				else {
-					cout << " ****** illegal operand" << '\n';
+                        error = true;
+                        errorStr = " ****** illegal operand";
+				//	cout << " ****** illegal operand" << '\n';
 				}
 			}
 			else {
-				cout << " ****** extra number at end of statement " << '\n';
+                    error = true;
+                        errorStr = " ****** extra number at end of statement ";
+			//	cout << " ****** extra number at end of statement " << '\n';
 			}
 		}
 		else {
 			flag = 2;
 			if (locationsTable->isFound(Label)) {
 				forwRefFound* c = new forwRefFound();
-				c->execute(Label,address);
+				c->execute(Label, address);
 			}
 		}
 	}
@@ -87,9 +139,9 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 		dataTable.insert({ Label, address });
 		if (locationsTable->isFound(Label)) {
 			forwRefFound* c = new forwRefFound();
-			c->execute(Label,address);
+			c->execute(Label, address);
 		}
-		sym = DynamicTables::setting(strings, line_index, address);
+		sym = DynamicTables::setting(strings, line_index, address,error, errorStr);
 		//           return true;
 	}
 	int flag2 = 1;
@@ -104,7 +156,9 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 				}
 				else if ((Operand.length() != 0) && (MakeSure.equalIgnoreCase(Operand, labelstart))) {
 					flag1 = 1;
-					cout << " ****** undefined symbol in operand " << '\n';
+					 error = true;
+                        errorStr = " ****** undefined symbol in operand ";
+				//	cout << " ****** undefined symbol in operand " << '\n';
 				}
 			}
 			else if (MakeSure.equalIgnoreCase(Operation, "RSUB")) {
@@ -113,7 +167,9 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 				}
 				else {
 					flag1 = 1;
-					cout << " ****** undefined symbol in operand " << '\n';
+					 error = true;
+                        errorStr = " ****** undefined symbol in operand ";
+					//cout << " ****** undefined symbol in operand " << '\n';
 				}
 			}
 			else if ((MakeSure.equalIgnoreCase(Operation, "Base")) && (Label.length() == 0)) {
@@ -124,8 +180,10 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 			}
 			else {
 				if ((dataTable.find(Operand) != dataTable.end())) {
-
-					if ((((Operation.at(Operation.length() - 1) != 'R') && (!MakeSure.equalIgnoreCase(Operation, "RMO"))) && (!MakeSure.equalIgnoreCase(Operation, "SHIFTL")))) {
+					if ((MakeSure.equalIgnoreCase(Operation, "TIXR")) && !(statTables->regIsFound(Operand))) {
+						flag2 = 3;
+					}
+					else if ((((Operation.at(Operation.length() - 1) != 'R') && (!MakeSure.equalIgnoreCase(Operation, "RMO"))) && (!MakeSure.equalIgnoreCase(Operation, "SHIFTL")))) {
 						flag2 = 3;
 					}
 
@@ -134,7 +192,7 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 					if (Label.length() == 0) Label = to_string(line_index);
 					flag2 = 3;
 					//locationsTable->getsymbolLocations().insert({address,Label});
-					locationsTable->addLocation(address,Label);
+					locationsTable->addLocation(address, Label);
 				}
 			}
 		}
@@ -151,81 +209,187 @@ symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, str
 			}
 			else {
 				flag1 = 1;
-				cout << " ****** undefined symbol in operand " << '\n';
+				 error = true;
+                        errorStr = " ****** undefined symbol in operand ";
+			//	cout << " ****** undefined symbol in operand " << '\n';
 			}
 		}
 		else if ((((Operand.at(0) == '#') || (Operand.at(0) == '@')) || (Operand.at(0) == '*'))) {
+			//cout << "HERE ******************FFFFFFFFFFFFFFFFFFF" << endl;
 			if (((Operation.at(Operation.length() - 1) != 'R') && (!MakeSure.equalIgnoreCase(Operation, "RMO"))) && (!MakeSure.equalIgnoreCase(Operation, "SHIFTL"))) {
+				//cout << "HERE ******************FFFFFFFFFFFFFFFFFFF" << endl;
 				if ((Operand.at(0) == '*')) {
 					if ((Operand.length() == 1)) {
 						flag2 = 3;
 					}
 					else {
-						cout << " ****** undefined symbol in operand " << '\n';
+                             error = true;
+                        errorStr = " ****** undefined symbol in operand ";
+					//	cout << " ****** undefined symbol in operand " << '\n';
 					}
+					//cout << "HERE 11111111111111111111111111111111111" << endl;
 				}
 				else {
 					string temp = Operand.substr(1, (Operand.length() - 1));
 					if ((is_digits(temp)) && (temp.length() < 4)) {
 						flag2 = 3;
+	//					cout << "1 Here " << temp << " " << address << " " << Label << endl;
 					}
 					else if (dataTable.find(temp) == dataTable.end()) {
 						flag2 = 3;
+						//cout << "2 Here " << temp << " " << address << " " << Label << endl;
+						if (Label.length() == 0) Label = to_string(line_index);
+	//					cout << "*******Adding " << Label << "at address " << address << endl;
+						//locationsTable->getsymbolLocations().insert({ address,Label });
+						locationsTable->addLocation(address, Label);
 					}
-					else if(is_Aphabet(temp)) {
+					else if (is_Aphabet(temp)) {
 						flag2 = 3;
 						if (Label.length() == 0) Label = to_string(line_index);
+//						cout << "*******Adding " << Label << "at address " << address << endl;
 						//locationsTable->getsymbolLocations().insert({ address,Label });
 						locationsTable->addLocation(address, Label);
 					}
 					else {
-						cout << " ****** undefined symbol in operand " << '\n';
+	//					cout << "3 Here " << temp << " " << address << " " << Label << endl;
+                        error = true;
+                        errorStr = " ****** undefined symbol in operand ";
+			//			cout << " ****** undefined symbol in operand " << '\n';
 					}
+					//cout << "HERE2222222222222222222222222222222222222" << endl;
 				}
 			}
 		}
 		else if (Operand.find(",") != std::string::npos) {
-			std::vector<string> vect;
-			std::stringstream ss(Operand);
-			for (string i; ss >> i;) {
-				vect.push_back(i);
-				if (ss.peek() == ',')
-					ss.ignore();
+			vector<string> result;
+			stringstream s_stream(Operand); //create string stream from the string
+			while (s_stream.good()) {
+				string substr;
+				getline(s_stream, substr, ','); //get first string delimited by comma
+				result.push_back(substr);
 			}
 
-			if ((vect.size() == 2) && (((Operation.at(Operation.length() - 1) == 'R') && (Operation.length() > 2)) || (((MakeSure.equalIgnoreCase(Operation, "RMO"))) || (MakeSure.equalIgnoreCase(Operation, "SHIFTL"))))) {
-				if (statTables->regIsFound(vect[0]) && statTables->regIsFound(vect[1])) {
+			if ((result.size() == 2) && (((Operation.at(Operation.length() - 1) == 'R') && (Operation.length() > 2)) || (((MakeSure.equalIgnoreCase(Operation, "RMO"))) || (MakeSure.equalIgnoreCase(Operation, "SHIFTL"))))) {
+				if (!(statTables->regIsFound(result.at(0))) && !(statTables->regIsFound(result.at(1)))) {
 					flag2 = 3;
 				}
 			}
-			else if ((vect.size() == 2) && (((Operation.at(Operation.length() - 1) != 'R') && (!MakeSure.equalIgnoreCase(Operation, "RMO"))) && (!MakeSure.equalIgnoreCase(Operation, "SHIFTL")))) {
-				if (((vect[1] == "X") || (vect[1] == "x")) && (is_Aphabet(vect[0]))) {
-					if (dataTable.find(vect[0]) != dataTable.end()) {
+			else if ((result.size() == 2) && (((Operation.at(Operation.length() - 1) != 'R') && (!MakeSure.equalIgnoreCase(Operation, "RMO"))) && (!MakeSure.equalIgnoreCase(Operation, "SHIFTL")))) {
+				if (((result.at(1) == "X") || (result.at(1) == "x")) && (is_Aphabet(result.at(0)))) {
+					if (dataTable.find(result.at(0)) != dataTable.end()) {
 						flag2 = 3;
 					}
-					else if (is_Aphabet(vect[0])) {
+					else if (is_Aphabet(result.at(0))) {
 						flag2 = 3;
 						if (Label.length() == 0) Label = to_string(line_index);
 						//locationsTable->getsymbolLocations().insert({ address,Label });
 						locationsTable->addLocation(address, Label);
 					}
 					else {
-						cout << " ****** undefined symbol in operand " << '\n';
+                             error = true;
+                        errorStr = " ****** undefined symbol in operand ";
+					//	cout << " ****** undefined symbol in operand " << '\n';
 					}
 				}
 			}
 		}
 	}
 
-
+	if(Operation=="EQU"){
+            if (exp==""){
+                exp =to_string(extractOperands(Operand));
+            }
+            vector<string> row ;
+            row.push_back(Label);
+            row.push_back(exp);
+        EquTable.push_back(row);
+        address = exp;
+    }
+cout <<EquTable.size()<<endl;
 	if ((flag2 == 3) || (flag == 2)) {
-		sym = DynamicTables::setting(strings, line_index, address);
-		cout << "After Settings " << endl;
-		cout << (*sym).getAddress() << "    " << (*sym).getLabel() << "     " << (*sym).getOperation() << "      " << (*sym).getOperand() << "      " << (*sym).getOpcode() << endl;
+		sym = DynamicTables::setting(strings, line_index, address, error, errorStr);
+	//	cout << "After Settings " << endl;
+	//	cout << (*sym).getAddress() << "    " << (*sym).getLabel() << "     " << (*sym).getOperation() << "      " << (*sym).getOperand() << "      " << (*sym).getOpcode() << endl;
 		//symbolTable sym = symbolMap->getLine(strings[0]);
+	}else if(error ==true){
+        cout << errorStr +" in line "+ to_string(line_index) <<endl;
 	}
 
 	return *sym;
+}
+
+string DynamicTables:: evaluateExp (string& Operand, bool error, string errorStr){
+    int x = 0,op1,op2;
+    int ans=0;
+    char op;
+    string typ1,typ2;
+    vector<string> operands;
+       if (Operand.find("+") != std::string::npos) {
+            op = '+';
+       }else if (Operand.find("-") != std::string::npos) {
+            op = '-';
+       }else if (Operand.find("*") != std::string::npos) {
+            op = '*';
+       }else if (Operand.find("/") != std::string::npos){
+        op = '/';
+       }else {
+            return "";
+       }
+       split (Operand,operands,op);
+        if (!is_digits(operands[0]))
+       typ1=symbolMap->getLine(operands[0]).getType() ;
+        if (!is_digits(operands[1]))
+       typ2=symbolMap->getLine(operands[1]).getType();
+
+       if ((typ1==typ2&&typ1=="A")||((typ1==typ2&&typ1=="R")&&(op=='-'))){
+            sym->setType("A");
+       }else if ((op!='*'&&op!='/')&&(((typ1=="R")&&(typ2=="A"))||((typ1=="A")&&(typ2=="R")&&(op=='+')))){
+            sym->setType("R");
+       }else {
+            error = true;
+            errorStr = "****** undefined Expression in operand ";
+         //   cout<< "****** undefined Expression in operand "<<endl;
+       }
+
+       op1 = extractOperands(operands[0]);
+       op2 = extractOperands(operands[1]);
+
+        if (op=='+'){
+            ans = op1+op2;
+        }else if (op=='-'){
+            ans = op1-op2;
+        }else if (op=='*'){
+            ans = op1*op2;
+        }else{
+            ans = op1/op1;
+        }
+
+        return to_string(ans);
+}
+
+ int DynamicTables::extractOperands(string& operand){
+     int op,x;
+     if (is_digits(operand)){
+                stringstream geek(operand);
+                geek >> x;
+            }/*else if (dataTable.count(operand)==1){
+                stringstream geek(dataTable.at(operand));
+                geek >> x;
+            }*/else if (!(symbolMap->isFound(operand))){
+                stringstream geek((symbolMap->getLine(operand).getAddress()));
+                geek >> x;
+            }
+        op = x;
+        return op;
+ }
+void DynamicTables:: split (string operand,vector<string>& operands,char op){
+    stringstream test(operand);
+    string segment;
+
+while(getline(test, segment, op))
+{
+   operands.push_back(segment);
+}
 }
 
 bool DynamicTables::is_digits_of_Hexa(const std::string& str) {
@@ -238,19 +402,26 @@ bool DynamicTables::is_Aphabet(const std::string& str) {
 	return str.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") == std::string::npos;
 }
 
-symbolTable* DynamicTables::setting(string strings[3], int line_index, string& address) {
-	symbolTable* sym = new symbolTable();
+symbolTable* DynamicTables::setting(string strings[3], int line_index, string& address,bool error, string errorStr) {
+//	symbolTable* sym = new symbolTable();
 	if (strings[1] == "ORG") {
 		sym->setAddress("");
 	}
 	else {
 		sym->setAddress(address);
 	}
+	if (strings[1]=="RESB"||strings[1]=="RESW"){
+            sym->setType("R");
+    }else if (strings[1]=="WORD"){
+            sym->setType("A");
+    }
 	address = makeAddress.LocationCounter(strings[1], strings[2]);
 	sym->setLabel(strings[0]);
 	sym->setNextAddress(address);
 	sym->setOperation(strings[1]);
 	sym->setOperand(strings[2]);
+	sym->setError(error);
+	sym->setErrorStr(errorStr);
 	if (strings[0].length() == 0 || is_digits(strings[0])) {
 		strings[0] = to_string(line_index);
 		sym->setLabel("");
@@ -259,9 +430,9 @@ symbolTable* DynamicTables::setting(string strings[3], int line_index, string& a
 	//cout <<"************************* " <<strings[0]<<endl;
 	symbolMap->addLine(strings[0], *sym);
 
-	cout << "\nFROM DYNAMIC TABLES " << endl;
+//	cout << "\nFROM DYNAMIC TABLES " << endl;
 
-	cout << symbolMap->getLine(strings[0]).getAddress() << "    " << symbolMap->getLine(strings[0]).getLabel() << "     " << symbolMap->getLine(strings[0]).getOperation() << "      " << symbolMap->getLine(strings[0]).getOperand() << "      " << symbolMap->getLine(strings[0]).getOpcode() << endl;
+//	cout << symbolMap->getLine(strings[0]).getAddress() << "    " << symbolMap->getLine(strings[0]).getLabel() << "     " << symbolMap->getLine(strings[0]).getOperation() << "      " << symbolMap->getLine(strings[0]).getOperand() << "      " << symbolMap->getLine(strings[0]).getOpcode() << endl;
 
 	return sym;
 }

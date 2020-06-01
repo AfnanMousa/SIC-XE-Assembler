@@ -1,0 +1,29 @@
+
+
+
+Symbol table with Object Codes
+0         COPY      START     0                                       
+0         FIRST     STL       RETADR    172036                        
+3                   LDB       #LENGTH   692036                        
+6         CLOOP     +JSUB     RDREC     4B100029                      
+A                   LDA       LENGTH    3202F                         
+D                   COMP      #0        290000                        
+10                  JEQ       ENDFIL    332007                        
+13                  +JSUB     ENDFIL    4B10001A                      
+17                  J         CLOOP     3F2FEC                        
+1A        ENDFIL    LDA       EOF       32019                         
+1D                  STA       BUFFER    F201F                         
+20                  LDA       #3        10003                         
+23                  STA       LENGTH    F2016                         
+26                  J         @RETADR   3E2010                        
+29        RDREC     CLEAR     X         B410                          
+2B                  CLEAR     A         B400                          
+2D                  CLEAR     S         B440                          
+2F                  +LDT      #4096     75101000                      
+33                  RSUB                4F0000                        
+****** RSUB doesn't need an operand
+36        EOF       BYTE      C'EOF'                                  
+39        RETADR    RESW      1                                       
+3C        LENGTH    RESW      1                                       
+3F        BUFFER    RESB      4096                                    
+103F                END       FIRST                                   

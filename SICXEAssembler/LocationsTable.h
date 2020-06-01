@@ -6,12 +6,12 @@ using namespace std;
 
 class LocationObject {
 private :
-	vector<string> linkedList;
 	string star;
 public:
+	vector<string> linkedList;
 	LocationObject() {}
 	virtual ~LocationObject() {}
-	vector<string> getVector();
+	vector<string>& getVector();
 	void setStar(string);
 	string getStar();
 	void addInVector(string);
@@ -27,7 +27,7 @@ private:
 
 public:
 	static Locations* getInstance();
-	LocationObject getLabel(string);
+	LocationObject& getLabel(string);
 	std::map<std::string, LocationObject> getLocationsTable();
 	void addLocation(string, LocationObject);
 	bool isFound(string);

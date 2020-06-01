@@ -1,1 +1,19 @@
-﻿  SICXEAssembler.vcxproj -> C:\Users\hp\source\repos\SICXEAssembler\Debug\SICXEAssembler.exe
+﻿  Controller.cpp
+  Format2.cpp
+  Format3.cpp
+  Format4.cpp
+  FormatChecker.cpp
+  Parsing.cpp
+  Print.cpp
+  ReadFromFile.cpp
+  SICXEAssembler.cpp
+  WriteInFile.cpp
+C:\Users\hp\source\repos\SICXEAssembler\SICXEAssembler\Print.cpp(11,19): warning C4018: '<': signed/unsigned mismatch
+C:\Users\hp\source\repos\SICXEAssembler\SICXEAssembler\WriteInFile.cpp(28,19): warning C4018: '<': signed/unsigned mismatch
+  addSymbol.cpp
+C:\Users\hp\source\repos\SICXEAssembler\SICXEAssembler\WriteInFile.cpp(69,19): warning C4018: '<': signed/unsigned mismatch
+  findADisplacement.cpp
+  findFlags.cpp
+  Generating Code...
+C:\Users\hp\source\repos\SICXEAssembler\SICXEAssembler\addSymbol.cpp(13,20): warning C4018: '<': signed/unsigned mismatch
+  SICXEAssembler.vcxproj -> C:\Users\hp\source\repos\SICXEAssembler\Debug\SICXEAssembler.exe

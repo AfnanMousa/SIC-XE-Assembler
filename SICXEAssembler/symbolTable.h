@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <vector>
 using namespace std;
 
 
@@ -17,6 +18,8 @@ private:
 	string key;
 	string nextAddress;
 	string operation;
+	string type;
+	string errorStr;
 	bool error;
 
 public:
@@ -27,7 +30,9 @@ public:
 	void setOperation(string operand);
 	void setKey(string objectCode);
 	void setError(bool err);
+	void setType(string type);
 	void setNextAddress(string address);
+	void setErrorStr(string errorStr);
 	string getAddress();
 	string getLabel();
 	string getOpcode();
@@ -35,6 +40,8 @@ public:
 	string getOperation();
 	string getKey();
 	string getNextAddress();
+	string getType();
+	string getErrorStr();
 	bool getError();
 
 
@@ -49,6 +56,7 @@ private:
 	virtual ~SYMTable() {}
 	std::string BASE;
 	std::map<std::string, symbolTable> SYMPOLTable;
+	vector<std::string> v;
 
 public:
 	static SYMTable* getInstance();
@@ -58,6 +66,7 @@ public:
 	int occurrences(string);
 	void setBASE(string);
 	std::string getBASE();
+	vector<string> getKeys();
 	std::map<std::string, symbolTable>& getTable();
 };
 

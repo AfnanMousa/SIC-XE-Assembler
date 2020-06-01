@@ -15,7 +15,7 @@ class Parsing
 {
 public:
 	Parsing();
-	symbolTable Check_Indecies(int& line_index, string operation);
+	symbolTable Check_Indecies(int& line_index, string operation, bool& error);
 	bool check(string operation);
 	void setting(string strings[3], int line_index);
 	vector<string> split(string Line);

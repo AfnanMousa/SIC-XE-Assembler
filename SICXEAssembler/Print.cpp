@@ -1,46 +1,40 @@
 #include "Auxillary.h"
 #include "SymbolTable.h"
 #include "LocationsTable.h"
+#include <iomanip>
+#include <iostream>
 
 void Print::printSYMTABLE() {
 	SYMTable* taable = taable->getInstance();
 	std::map<std::string, symbolTable> table = taable->getTable();
-	cout << "Symbol Table" << "\n";
-	cout << "Key\tLocation\tLabel\tOperation\tOperand\tOPCode"<< "\n\n";
-	for (const auto& x : table) {
-		std::cout << x.first << ": ";
-		symbolTable symbolMap = x.second;
-		cout << symbolMap.getAddress() << "    " << symbolMap.getLabel() << "     " << symbolMap.getOperation() << "      " << symbolMap.getOperand() << "      " << symbolMap.getOpcode() << endl;
+	vector<string> keys = taable->getKeys();
+	for (int i = 0;i < keys.size();i++) {
+		symbolTable symbolMap = taable->getLine(keys.at(i));
+		cout << std::left;
+		cout << setw(10)<< symbolMap.getAddress() << setw(10)<< symbolMap.getLabel() <<  setw(10) << symbolMap.getOperation() << setw(10) << symbolMap.getOperand() << setw(30) << symbolMap.getOpcode() << setw(15)<<endl;
+        if (symbolMap.getError()==true){
+            cout << symbolMap.getErrorStr()<<endl;
+        }
 	}
-
-	cout << "\n\n\n\n";
 }
 
 void Print::printAddressSymbolTable(){
 	Locations* locations = locations->getInstance();
 	std::map<std::string, std::string> table = locations->getsymbolLocations();
 	cout << "Address Symbol Table" << "\n";
-	cout << "Address\tSymbol" << "\n\n";
-	for (const auto& x : table) 
+	for (const auto& x : table)
+        if (!is_digits(x.second ))
 		std::cout << x.first << " : "<< x.second << "\n";
-
-	cout << "\n\n\n\n";
 }
 
 void Print::printForwardRefTable() {
 	Locations* locations = locations->getInstance();
 	std::map<std::string, LocationObject> table = locations->getLocationsTable();
-
-	cout << "Forward Refrencing Table" << "\n";
-	cout << "Symbol\tLinked List" << "\n\n";
 	for (const auto& x : table) {
-		std::cout << x.first << ": ";
 		LocationObject  vect = x.second;
 		vector<string> vector = vect.getVector();
-		for (std::vector<string>::const_iterator i = vector.begin(); i != vector.end(); ++i)
-			std::cout << *i << ' ';
-		cout << "\n";
 	}
-
-	cout << "\n\n\n\n";
+}
+bool Print::is_digits(const std::string& str) {
+	return str.find_first_not_of("0123456789") == std::string::npos;
 }

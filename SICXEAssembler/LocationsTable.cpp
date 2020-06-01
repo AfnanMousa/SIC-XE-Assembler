@@ -8,7 +8,7 @@ Locations* Locations::getInstance() {
 	return instance;
 }
 
-LocationObject Locations::getLabel(string index) {
+LocationObject& Locations::getLabel(string index) {
 	return LocationsTable.at(index);
 }
 
@@ -28,7 +28,7 @@ std::map<std::string, std::string> Locations::getsymbolLocations() {
 	return symbolLocations;
 }
 
-vector<string> LocationObject::getVector() {
+vector<string>& LocationObject::getVector() {
 	return linkedList;
 }
 

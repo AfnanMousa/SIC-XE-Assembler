@@ -12,6 +12,7 @@ public:
 	transitions() = default;
 	virtual ~transitions() {}
 	string subtract(string ,string ,int);
+	bool subtractDec(string, string);
 	string decimalToBinary(int);
 	string hexaToBinary(string);
 	int hexaToDec(string);
@@ -20,6 +21,7 @@ public:
 	string addZeroes(string,int);
 	string add(string s1, string s2);
 	string convertBinToHex(string);
+	string decToHexa(int decimal);
 };
 
 class ConvertToHexa
@@ -51,6 +53,7 @@ public:
 	void printSYMTABLE();
 	void printAddressSymbolTable();
 	void printForwardRefTable();
+	bool is_digits(const std::string& str);
 
 };
 

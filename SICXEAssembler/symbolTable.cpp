@@ -31,6 +31,10 @@ void symbolTable::setKey(string objectCode)
 	this->key = objectCode;
 }
 
+void symbolTable::setType(string Type)
+{
+	this->type = Type;
+}
 void symbolTable::setError(bool err)
 {
 	this->error = err;
@@ -41,6 +45,9 @@ void symbolTable::setNextAddress(string nextAddress)
 	this->nextAddress = nextAddress;
 }
 
+void symbolTable::setErrorStr(string errorStr){
+    this->errorStr = errorStr;
+}
 string symbolTable::getAddress()
 {
 	return address;
@@ -76,6 +83,16 @@ string symbolTable::getNextAddress()
 	return nextAddress;
 }
 
+string symbolTable::getType()
+{
+	return  type;
+}
+
+string symbolTable::getErrorStr()
+{
+	return  errorStr;
+}
+
 bool symbolTable::getError()
 {
 	return error;
@@ -90,6 +107,7 @@ symbolTable::symbolTable()
 	key = "";
 	nextAddress = "";
 	operation = "";
+	type = "";
 	error = false;
 }
 

@@ -5,8 +5,12 @@
 #include <string>
 #include <sstream>
 #include<stdio.h>
-#include "Auxillary.h""
+#include "Auxillary.h"
+#include "StaticTables.h"
 using namespace std;
+
+StaticTables* staticTables = staticTables->getInstance();
+
 MakeAddress::MakeAddress()
 {
 	//ctor
@@ -28,7 +32,7 @@ bool MakeAddress::equalIgnoreCase(string str1, string str2)
 	else
 		return true;
 }
-
+int addressBeforeORG;
 string MakeAddress::LocationCounter(string Operation, string Operand) {
 	ConvertToHexa temp;
 	string Output;
@@ -40,6 +44,9 @@ string MakeAddress::LocationCounter(string Operation, string Operand) {
 		else {
 			/////////////////////
 		}
+	}
+	else if (staticTables->occurrencesInFormat2(Operation) == 1) {
+		LOC = LOC + 2;
 	}
 	else {
 		stringstream geek(Operand);
@@ -76,24 +83,22 @@ string MakeAddress::LocationCounter(string Operation, string Operand) {
 			}
 		}
 		else if (equalIgnoreCase(Operation, "ORG")) {
-			if (symbolMap->occurrences(Operand) == 1) {
-				Operand = symbolMap->getLine(Operand).getAddress();
-			}
-			else if (checkIfHexa(Operand)) {
+			addressBeforeORG = LOC;
+            if (Operand.length()==0){
+                LOC= addressBeforeORG;
 
-			}
-			else {
-				cout << "ERROR, SYNBOL TABLE DOESN'T CONTAIN THIS OPERAND" << endl;
-			}
-			LOC = temp.hexaToInt(Operand);
-		}
-		else if (equalIgnoreCase(Operation, "EQU")) {
+            }else if (!symbolMap->isFound(Operand)){
+                Operand = symbolMap->getLine(Operand).getAddress();
+            }
+            else if (checkIfHexa(Operand)){
 
-			string hexa = symbolMap->getLine(Operand).getAddress();
-			LOC = temp.hexaToInt(hexa);
+            }else {
+               cout<<"ERROR, SYMBOL TABLE DOESN'T CONTAIN THIS OPERAND"<<endl;
+            }
 
-		}
-		else {
+            if (Operand.length()!=0)
+                LOC = temp.hexaToInt(Operand);
+		}else {
 			LOC = LOC + 3;
 		}
 
