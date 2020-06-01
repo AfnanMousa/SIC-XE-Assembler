@@ -21,6 +21,7 @@ DynamicTables* DynamicTables::getInstance() {
         instance = new DynamicTables;
     return instance;
 }
+ConvertToHexa Convert;
 Locations* locationsTable = locationsTable->getInstance();
 symbolTable& DynamicTables::BuildDataTable(string& Label, string& Operation, string& Operand, string& address, string strings[3], int line_index,bool error, string errorStr) {
 	string exp = evaluateExp(Operand, error, errorStr);
@@ -348,9 +349,10 @@ string DynamicTables:: evaluateExp (string& Operand, bool error, string errorStr
        }else {
             error = true;
             errorStr = "****** undefined Expression in operand ";
-         //   cout<< "****** undefined Expression in operand "<<endl;
+            cout<< "****** undefined Expression in operand "<<endl;
        }
-
+    string hexa ="";
+       if (error==false){
        op1 = extractOperands(operands[0]);
        op2 = extractOperands(operands[1]);
 
@@ -364,22 +366,23 @@ string DynamicTables:: evaluateExp (string& Operand, bool error, string errorStr
             ans = op1/op1;
         }
 
-        return to_string(ans);
+        hexa = Convert.IntToHexa(ans);}
+
+        return hexa;
 }
 
  int DynamicTables::extractOperands(string& operand){
-     int op,x;
-     if (is_digits(operand)){
-                stringstream geek(operand);
-                geek >> x;
+     string x;
+     int op;
+     if (is_digits_of_Hexa(operand)){
+                x = operand;
             }/*else if (dataTable.count(operand)==1){
                 stringstream geek(dataTable.at(operand));
                 geek >> x;
             }*/else if (!(symbolMap->isFound(operand))){
-                stringstream geek((symbolMap->getLine(operand).getAddress()));
-                geek >> x;
+                x =(symbolMap->getLine(operand).getAddress());
             }
-        op = x;
+        op = Convert.hexaToInt(x);
         return op;
  }
 void DynamicTables:: split (string operand,vector<string>& operands,char op){
