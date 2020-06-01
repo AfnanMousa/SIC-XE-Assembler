@@ -98,7 +98,7 @@ string MakeAddress::LocationCounter(string Operation, string Operand) {
 
             if (Operand.length()!=0)
                 LOC = temp.hexaToInt(Operand);
-		}else {
+		}else if (!equalIgnoreCase(Operation, "EQU")){
 			LOC = LOC + 3;
 		}
 
